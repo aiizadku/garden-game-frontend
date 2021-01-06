@@ -21,6 +21,7 @@ const LoginPage = () => {
         <FormControl>
           <TextField
             required={true}
+            label="Username"
             placeholder="Username"
             variant="outlined"
           ></TextField>
@@ -31,6 +32,7 @@ const LoginPage = () => {
           <TextField
             required={true}
             type="password"
+            label="Password"
             placeholder="Password"
             variant="outlined"
           ></TextField>
@@ -40,6 +42,7 @@ const LoginPage = () => {
         <Button variant="contained" color="primary">Login</Button>
       </Grid>
       <Grid item xs={12}>
+        {/* register component */}
         <Register />
       </Grid>
     </Grid>
