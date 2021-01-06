@@ -1,4 +1,5 @@
 import React from "react";
+import "./LoginPage.css";
 import {
   FormControl,
   TextField,
@@ -11,7 +12,7 @@ import Register from "../components/Register";
 const LoginPage = () => {
   return (
     // grid container, holds grid items
-    <Grid container spacing={1} align="center">
+    <Grid container spacing={1} align="center" className="container">
       <Grid item xs={12}>
         <Typography component="h4" variant="h4">
           Login
@@ -39,7 +40,9 @@ const LoginPage = () => {
         </FormControl>
       </Grid>
       <Grid item xs={12}>
-        <Button variant="contained" color="primary">Login</Button>
+        <Button variant="contained" color="primary">
+          Login
+        </Button>
       </Grid>
       <Grid item xs={12}>
         {/* register component */}
