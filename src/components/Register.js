@@ -35,10 +35,34 @@ const Register = () => {
             To register to this website, please enter your username, password,
             city, and state here.
           </DialogContentText>
-          <TextField autoFocus margin="dense" label="Username" fullWidth />
-          <TextField autoFocus margin="dense" label="Password" fullWidth />
-          <TextField autoFocus margin="dense" label="City" fullWidth />
-          <TextField autoFocus margin="dense" label="State" fullWidth />
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Username"
+            required={true}
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Password"
+            required={true}
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            label="City"
+            required={true}
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            label="State"
+            required={true}
+            fullWidth
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
