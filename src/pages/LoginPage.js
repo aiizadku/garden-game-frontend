@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./LoginPage.css";
 import {
   FormControl,
@@ -9,7 +9,32 @@ import {
 } from "@material-ui/core";
 import Register from "../components/Register";
 
-const LoginPage = () => {
+const LoginPage = (props) => {
+  const [weather, setWeather] = useState("");
+  console.log(props);
+  useEffect(() => {
+    fetch(
+      `https://community-open-weather-map.p.rapidapi.com/weather?q=${props.userCity}%2C${props.userState}%2CUSA&units=imperial`,
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key":
+            "9787f1e58amshcbfb9f8a0dfd985p1cb905jsn7b1c9d802fc2",
+          "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
+        },
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((condition) => {
+        setWeather(condition.weather[0].main);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+
   return (
     // grid container, holds grid items
     <Grid container spacing={1} align="center" className="container">
