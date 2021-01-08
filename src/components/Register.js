@@ -14,7 +14,7 @@ import Alert from "./alerts/DefaultAlert";
 const Register = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState({ error: false, message: "" });
-
+  
   const handleClickOpen = () => {
     setOpen(true);
   };

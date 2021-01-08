@@ -28,10 +28,7 @@ class App extends Component {
         return response.json();
       })
       .then((location) => {
-        console.log(location);
         this.setState({ userState: location.state, userCity: location.city });
-
-        console.log(location.state);
       })
       .catch((err) => {
         console.error(err);
@@ -43,10 +40,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <LoginPage
-          userState={this.state.userState}
-          userCity={this.state.userCity}
-        />
+          <LoginPage
+            userState={this.state.userState}
+            userCity={this.state.userCity}
+          />
       </div>
     );
   }
