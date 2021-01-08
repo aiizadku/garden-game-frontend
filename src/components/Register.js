@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import {
   Button,
   TextField,
+  MenuItem,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  makeStyles,
 } from "@material-ui/core";
 const Register = () => {
   const [open, setOpen] = useState(false);
+  const [stateName, setStateName] = useState("");
+  const [city, setCity] = useState("");
+
 
   const states = [
     { name: "Alabama", code: "AL" },
@@ -65,18 +68,11 @@ const Register = () => {
     { name: "Wyoming", code: "WY" },
   ];
 
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      "& .MuiTextField-root": {
-        margin: theme.spacing(1),
-        width: "25ch",
-      },
-    },
-  }));
-
-  const MultiLineTextField = () => {
-    const classes = useStyles();
-    const [stateCode, setStateCode] = useState("AL");
+  const handleChangeState = (event) => {
+    setStateName(event.target.value);
+  };
+  const handleChangeCity = (event) => {
+    setCity(event.target.value);
   };
 
   const handleClickOpen = () => {
@@ -120,11 +116,20 @@ const Register = () => {
           />
           <TextField
             autoFocus
-            margin="dense"
-            label="State"
-            required={true}
             fullWidth
-          />
+            select
+            label="Select"
+            value={stateName}
+            onChange={handleChangeState}
+            helperText="Please select your state"
+          >
+            {states.map((option) => (
+              <MenuItem key={option.name} value={option.name}>
+                {option.name}
+              </MenuItem>
+            ))}
+            {console.log(stateName)}
+          </TextField>
           <TextField
             autoFocus
             margin="dense"
