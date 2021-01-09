@@ -43,7 +43,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <LoginPage
+        <GardenPage
           userState={this.state.userState}
           userCity={this.state.userCity}
         />

@@ -37,9 +37,24 @@ const currentUser = (token) => {
   })
 }
 
+const fetchUserBalanceByID = (userID) => {
+  return fetch(`http://127.0.0.1:8000/api/profile/${userID}`).then((response) => response.json())
+}
+
+const addToBalanceByID = (userID, addedAmountObject) => {
+  return fetch(`http://127.0.0.1:8000/api/profile/${userID}/`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'PUT',
+    body: JSON.stringify(addedAmountObject)
+  }).then((response) => response.json())
+}
+
 export default {
   registerUser,
   login,
   currentUser,
- 
+  fetchUserBalanceByID,
+  addToBalanceByID,
 }
