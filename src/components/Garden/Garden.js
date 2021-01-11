@@ -1,3 +1,4 @@
+import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
 
@@ -77,10 +78,26 @@ const Garden = (props) => {
       for (let c = 0; c < cols; c++) {
         gardenRow.push(
           <div classname={classes.flexPlot}>
-            <GardenPlot plantId={exampleData["plants"][r][c]["id"]} id={`plot${r}-${c}`} isPlant={true} growthPercent={exampleData["plants"][r][c]["growthPercent"]}/>
+            <GardenPlot
+              plantId={exampleData["plants"][r][c]["id"]}
+              id={`plot${r}-${c}`}
+              isPlant={true}
+              growthPercent={exampleData["plants"][r][c]["growthPercent"]}
+            />
           </div>
         );
       }
+      // Add empty row just for demo purposes
+      gardenRow.push(
+        <div classname={classes.flexPlot}>
+            <GardenPlot
+              plantId={null}
+              id={`plot${r}-${cols}`}
+              isPlant={false}
+              growthPercent={null}
+            />
+          </div>
+      )
       gardenPlots.push(
         <div className={classes.flexRow}>
           {gardenRow}
@@ -93,7 +110,7 @@ const Garden = (props) => {
       </div>
     );
   }
-
+  
   const classes = useStyles();
 
   return (
