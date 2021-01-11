@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core";
+import UserBalance from "../User Balance/UserBalance";
 
 const useStyles = makeStyles({
   sky: {
@@ -22,6 +23,7 @@ const Sky = (props) => {
   const classes = useStyles();
   return(
     <div className={classes.sky}>
+      <UserBalance/>
       Weather effects here.
     </div>
   );
