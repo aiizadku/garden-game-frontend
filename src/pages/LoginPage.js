@@ -8,18 +8,30 @@ import {
   Grid,
 } from "@material-ui/core";
 import Register from "../components/Register";
+import getWeather from "../api/WeatherApi";
+
+
 
 const LoginPage = (props) => {
   const [weather, setWeather] = useState("");
-  console.log(props);
- 
+
+  useEffect(() => {
+    getWeather(props.userCity, props.userState).then(json => {
+      setWeather(json);
+    })
+    }, [props.userCity, props.userState]);
+    
+
+
+
+
   return (
-    // grid container, holds grid items
+    // grid container, holds grid items 
     <Grid container spacing={1} align="center" className="container">
       <Grid item xs={12}>
         <Typography component="h4" variant="h4">
           Login
-        </Typography>
+        </Typography> 
       </Grid>
       <Grid item xs={12}>
         <FormControl>
@@ -43,7 +55,7 @@ const LoginPage = (props) => {
         </FormControl>
       </Grid>
       <Grid item xs={12}>
-        <Button variant="contained" color="primary">
+        <Button htmlType="submit" variant="contained" color="primary">
           Login
         </Button>
       </Grid>
