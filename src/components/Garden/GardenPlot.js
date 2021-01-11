@@ -21,6 +21,10 @@ const useStyles = makeStyles({
   }
 });
 
+/**
+ * Expects: handleHarvest, plantId, growthPercent
+ * @param {object} props 
+ */
 const GardenPlot = (props) => {
   const classes = useStyles();
   return(
@@ -32,6 +36,7 @@ const GardenPlot = (props) => {
               id={props.id}
               plantId={props.plantId}
               growthPercent={props.growthPercent}
+              handleHarvest={props.handleHarvest}
             />
           : null
         }

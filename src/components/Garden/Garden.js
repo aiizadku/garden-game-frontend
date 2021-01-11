@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
+import {harvestPlant} from "../../api/GameApi";
 
 // [row][col]
 const exampleData = {
@@ -70,6 +71,13 @@ const useStyles = makeStyles({
   }
 });
 
+const handleHarvest = (plantId, id) => {
+  harvestPlant(plantId); // Gives exp and $
+  // Remove plant with id from garden
+  console.log(id); // plot#-#, first is row, second is column
+  console.log("REMOVE ME - garden.js - handleHarvest.");
+}
+
 const Garden = (props) => {
   const makeGardenGrid = (rows, cols) => {
     let gardenPlots = [];
@@ -83,6 +91,7 @@ const Garden = (props) => {
               id={`plot${r}-${c}`}
               isPlant={true}
               growthPercent={exampleData["plants"][r][c]["growthPercent"]}
+              handleHarvest={handleHarvest}
             />
           </div>
         );

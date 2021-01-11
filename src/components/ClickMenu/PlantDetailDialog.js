@@ -35,7 +35,7 @@ const PlantDetailDialog = props => {
         </DialogContent>
         <DialogActions style={{backgroundColor: "tan"}}>
           {
-            props.growthStatus === "mature"
+            props.growthStatus === "Mature"
             ? <Button variant="contained" onClick={props.handleHarvest} color="secondary">
                 Harvest
               </Button>

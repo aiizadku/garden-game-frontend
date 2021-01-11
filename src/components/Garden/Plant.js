@@ -1,9 +1,9 @@
 import React from 'react';
 import getPlantDisplay from '../../images/images';
 import gsap from 'gsap';
-import PlantDetailDialog from '../ClickMenu/ClickMenu';
+import PlantDetailDialog from '../ClickMenu/PlantDetailDialog';
 import { makeStyles } from '@material-ui/core';
-
+import { harvestPlant } from "../../api/GameApi";
 
 const useStyles = makeStyles({
   plantContainer: {
@@ -20,7 +20,12 @@ const useStyles = makeStyles({
   }
 })
 
-
+/**
+ * Displays the plant, if planted.
+ * Opens seed menu if no plant, and the plot has been clicked.
+ * Expects: handleHarvest, id, plantId, growthPercent
+ * @param {object} props 
+ */
 const Plant = (props) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -51,6 +56,7 @@ const Plant = (props) => {
   };
   const handleHarvest = () => {
     console.log(`Harvest plant ${props.id}`);
+    props.handleHarvest(props.plantId, props.id);
     setIsMenuOpen(false);
   };
   const handleBack = () => {

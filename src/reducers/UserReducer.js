@@ -12,6 +12,7 @@ export const userReducer = (state = null, action) => {
     case 'TOKEN_USER':
       // http://localhost:8000/gardens/current_user/
       // action.data <-- response {'username': 'jason'}
+      console.log("TOKEN_USER: ", action)
       return {
         id: action.data.id,
         username: action.data.username,
