@@ -9,7 +9,8 @@ import {
   Grid,
 } from "@material-ui/core";
 import Register from "../components/Register";
-import UserAPI from '../api/UserApi'
+import UserAPI from '../api/UserApi';
+import getWeather from "../api/WeatherApi";
 
 const LoginPage = (props) => {
   const [weather, setWeather] = useState("");
@@ -17,28 +18,19 @@ const LoginPage = (props) => {
   const [error, setError] = useState({'error': false, 'message': null})
   const { dispatch } = useContext(UserContext)
 
+
+
+
+
   useEffect(() => {
-    fetch(
-      `https://community-open-weather-map.p.rapidapi.com/weather?q=${props.userCity}%2C${props.userState}%2CUSA&units=imperial`,
-      {
-        method: "GET",
-        headers: {
-          "x-rapidapi-key":
-            "9787f1e58amshcbfb9f8a0dfd985p1cb905jsn7b1c9d802fc2",
-          "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-        },
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((condition) => {
-        setWeather(condition.weather[0].main);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  });
+    getWeather(props.userCity, props.userState).then(json => {
+      setWeather(json);
+    })
+    }, [props.userCity, props.userState]);
+    
+
+
+
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -63,6 +55,7 @@ const LoginPage = (props) => {
   }
 
   return (
+
     // grid container, holds grid items
     
     <Grid container spacing={1} align="center" className="container">
@@ -70,7 +63,7 @@ const LoginPage = (props) => {
       <Grid item xs={12}>
         <Typography component="h4" variant="h4">
           Login
-        </Typography>
+        </Typography> 
       </Grid>
       <Grid item xs={12}>
       <form onSubmit={handleSubmit}>
@@ -94,6 +87,7 @@ const LoginPage = (props) => {
             placeholder="Password"
             variant="outlined"
           ></TextField>
+
           </Grid>
         
           <br/>

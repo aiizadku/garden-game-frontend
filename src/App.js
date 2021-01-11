@@ -1,3 +1,4 @@
+import GardenPage from "./pages/GardenPage";
 import React, { Component } from "react";
 import "./App.css";
 import LoginPage from "./pages/LoginPage.js";
@@ -29,10 +30,7 @@ class App extends Component {
         return response.json();
       })
       .then((location) => {
-        console.log(location);
         this.setState({ userState: location.state, userCity: location.city });
-
-        console.log(location.state);
       })
       .catch((err) => {
         console.error(err);
@@ -44,6 +42,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+
         <UserContextProvider>
         <LoginPage
           userState={this.state.userState}
@@ -52,6 +51,7 @@ class App extends Component {
         {/* <HomePage /> */}
         </UserContextProvider>
         
+
       </div>
     );
   }
