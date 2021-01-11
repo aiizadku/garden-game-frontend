@@ -11,22 +11,24 @@ import {
 import Register from "../components/Register";
 import UserAPI from '../api/UserApi';
 import getWeather from "../api/WeatherApi";
+import { Redirect } from 'react-router'
 
 const LoginPage = (props) => {
   const [weather, setWeather] = useState("");
   console.log(props);
   const [error, setError] = useState({'error': false, 'message': null})
   const { dispatch } = useContext(UserContext)
+  
 
 
 
 
 
-  useEffect(() => {
-    getWeather(props.userCity, props.userState).then(json => {
-      setWeather(json);
-    })
-    }, [props.userCity, props.userState]);
+  // useEffect(() => {
+  //   getWeather(props.userCity, props.userState).then(json => {
+  //     setWeather(json);
+  //   })
+  //   }, [props.userCity, props.userState]);
     
 
 
@@ -50,8 +52,9 @@ const LoginPage = (props) => {
 
       dispatch({type: 'LOGIN_USER', data})
       console.log("go to the HomePage")
-      // return props.history.push('/')
+      return props.history.push('/garden')
     }
+    
   }
 
   return (
