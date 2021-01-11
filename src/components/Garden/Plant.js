@@ -1,18 +1,34 @@
 import React from 'react';
 import getPlantDisplay from '../../images/images';
 import gsap from 'gsap';
+import PlantDetailDialog from '../ClickMenu/ClickMenu';
+import { makeStyles } from '@material-ui/core';
+
+
+const useStyles = makeStyles({
+  plantContainer: {
+    position: "relative",
+    //border: "solid 1px white",
+    width: "100%",
+    height: "100%"
+  },
+  plant: {
+    position:"absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
+  }
+})
 
 
 const Plant = (props) => {
-  // id of -1 means no image should be shown
-  // plantId corresponds to plant id from database.
-  const [plantId, setPlantId] = React.useState(-1);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const getGrowthStatus = (percentGrown) => {
-    if (percentGrown >= 100) return "mature";
-    else if (percentGrown >= 50) return "growing";
-    else if (percentGrown >= 20) return "seedling";
-    else return "justPlanted";
+    if (percentGrown >= 100) return "Mature";
+    else if (percentGrown >= 50) return "Growing";
+    else if (percentGrown >= 20) return "Seedling";
+    else return "Just Planted";
   };
 
   const animate = () => {
@@ -21,15 +37,55 @@ const Plant = (props) => {
     tl.from(`#${props.id}`, {duration: 1, scaleX:1.1, scaleY: .9});
   };
 
+  const handleClickEvent = (e) => {
+    if (!isMenuOpen) {
+      setIsMenuOpen(true);
+      console.log(`Plant ${props.id} clicked`);
+    }
+    //e.stopPropagation(); // Prevent further click events behind plant.
+  }
+
+  const handleWater = () => {
+    console.log(`Water plant ${props.id}`);
+    setIsMenuOpen(false);
+  };
+  const handleHarvest = () => {
+    console.log(`Harvest plant ${props.id}`);
+    setIsMenuOpen(false);
+  };
+  const handleBack = () => {
+    console.log("Back clicked");
+    setIsMenuOpen(false);
+  }
+
   React.useEffect(animate, [props.id]);
 
+  const classes = useStyles();
+
   return (
-    <div>
-      {props.id ?
-        <img id={props.id} src={getPlantDisplay(props.plantId, getGrowthStatus(props.growthPercent))} alt="Flower"/>
-        : "Plants must have unique IDs in props."
-      }
-    </div>
+    <>
+      <div onClick={e=>handleClickEvent(e)} className={classes.plantContainer}>
+        {
+          props.id
+          ? <img
+              id={props.id}
+              src={getPlantDisplay(props.plantId, getGrowthStatus(props.growthPercent))}
+              alt="Plant"
+              className={classes.plant}
+            />
+          : "Plants must have unique IDs in props."
+        }
+      </div>
+      <PlantDetailDialog
+        plotId={props.id}
+        plantId={props.plantId}
+        isMenuOpen={isMenuOpen}
+        handleHarvest={handleHarvest}
+        handleWater={handleWater}
+        handleBack={handleBack}
+        growthStatus={getGrowthStatus(props.growthPercent)}
+      />
+    </>
   );
 }
 

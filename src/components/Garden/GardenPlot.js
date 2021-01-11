@@ -13,9 +13,11 @@ const useStyles = makeStyles({
   plotContent: {
     alignContent: "center",
     position: 'absolute',
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    //transform: "translate(-50%, -50%)",
   }
 });
 
@@ -24,7 +26,15 @@ const GardenPlot = (props) => {
   return(
     <Box className={classes.plot}>
       <Box className={classes.plotContent}>
-        {props.isPlant ? <Plant id={props.id} plantId={props.plantId} growthPercent={props.growthPercent} /> : null}
+        {
+          props.isPlant
+          ? <Plant
+              id={props.id}
+              plantId={props.plantId}
+              growthPercent={props.growthPercent}
+            />
+          : null
+        }
       </Box>
     </Box>
   );
