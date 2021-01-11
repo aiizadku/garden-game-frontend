@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "./App.css";
 import LoginPage from "./pages/LoginPage.js";
+import HomePage from "./pages/HomePage.js";
+import UserContextProvider from './contexts/UserContext';
 
 class App extends Component {
   constructor(props) {
@@ -42,10 +44,14 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <UserContextProvider>
         <LoginPage
           userState={this.state.userState}
           userCity={this.state.userCity}
         />
+        {/* <HomePage /> */}
+        </UserContextProvider>
+        
       </div>
     );
   }
