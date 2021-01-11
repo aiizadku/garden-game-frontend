@@ -40,10 +40,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-          <LoginPage
-            userState={this.state.userState}
-            userCity={this.state.userCity}
-          />
+        <GardenPage
+          userState={this.state.userState}
+          userCity={this.state.userCity}
+        />
+
       </div>
     );
   }
