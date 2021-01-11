@@ -17,38 +17,38 @@ import GoldFlowerGrowing from "./GoldFlowerGrowing.png";
 import GoldFlowerMature from "./GoldFlowerMature.png";
 
 
-const getPlantDisplay = (plantId=0, growthStage="seedling") => {
+const getPlantDisplay = (plantId=0, growthStage="Just Planted") => {
   // plantImages entries must align with plant_id in database
   const plantImages = [
     {
-      "justPlanted": Mound,
-      "seedling":    Seedling,
-      "growing":     BlueFlowerGrowing,
-      "mature":      BlueFlowerMature
+      "Just Planted": Mound,
+      "Seedling":    Seedling,
+      "Growing":     BlueFlowerGrowing,
+      "Mature":      BlueFlowerMature
     },
     {
-      "justPlanted": Mound,
-      "seedling": Seedling,
-      "growing":  PurpleFlowerGrowing,
-      "mature":   PurpleFlowerMature
+      "Just Planted": Mound,
+      "Seedling": Seedling,
+      "Growing":  PurpleFlowerGrowing,
+      "Mature":   PurpleFlowerMature
     },
     {
-      "justPlanted": Mound,
-      "seedling": Seedling,
-      "growing":  RedFlowerGrowing,
-      "mature":   RedFlowerMature
+      "Just Planted": Mound,
+      "Seedling": Seedling,
+      "Growing":  RedFlowerGrowing,
+      "Mature":   RedFlowerMature
     },
     {
-      "justPlanted": Mound,
-      "seedling": Seedling,
-      "growing":  GoldFlowerGrowing,
-      "mature":   GoldFlowerMature
+      "Just Planted": Mound,
+      "Seedling": Seedling,
+      "Growing":  GoldFlowerGrowing,
+      "Mature":   GoldFlowerMature
     },
     {
-      "justPlanted": Mound,
-      "seedling": Seedling,
-      "growing":  OrangeFlowerGrowing,
-      "mature":   OrangeFlowerMature
+      "Just Planted": Mound,
+      "Seedling": Seedling,
+      "Growing":  OrangeFlowerGrowing,
+      "Mature":   OrangeFlowerMature
     }
   ];
   return plantImages[plantId][growthStage];
