@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
+import { UserContext } from '../../contexts/UserContext'
 
 // [row][col]
 const exampleData = {
@@ -37,7 +38,6 @@ const exampleData = {
 };
 
 
-
 const useStyles = makeStyles({
   flexContainer: {
     display: "inline-flex",
@@ -71,6 +71,10 @@ const useStyles = makeStyles({
 });
 
 const Garden = (props) => {
+
+  const userRow = UserContext._currentValue.user.garden.rows
+  const userColumn = UserContext._currentValue.user.garden.columns
+
   const makeGardenGrid = (rows, cols) => {
     let gardenPlots = [];
     for (let r = 0; r < rows; r++) {
@@ -115,7 +119,7 @@ const Garden = (props) => {
 
   return (
     <div className={classes.centered}>
-      {makeGardenGrid(4, 5)}
+      {makeGardenGrid(userRow, userColumn)}
     </div>
   );
 }

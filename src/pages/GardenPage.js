@@ -1,22 +1,32 @@
 import Sky from "../components/Sky/Sky";
 import Ground from "../components/Ground/Ground";
 import { makeStyles } from "@material-ui/core";
+import getLocation from "../api/LocationApi";
+import React, { useEffect, useState } from "react";
 
 const useStyles = makeStyles({
   container: {
-    "textAlign": "center"
-  }
+    textAlign: "center",
+  },
 });
 
-const GardenPage = props => {
+const GardenPage = (props) => {
+  // const [userState, setUserState] = useState("");
+  // const [city, setCity] = useState("");
+  // const [error, setError] = useState({ error: false, message: null });
+
+  // useEffect(() => {
+  //   getLocation();
+  // });
+
+  getLocation()
   const classes = useStyles();
-  return(
+  return (
     <div className={classes.container}>
       <Sky />
       <Ground />
     </div>
   );
 };
-
 
 export default GardenPage;

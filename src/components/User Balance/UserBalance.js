@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import UserApi from '../../api/UserApi';
 import fetchUserBalanceByID from '../../api/UserApi';
+
 import { UserContext } from '../../contexts/UserContext';
+
 
 class UserBalance extends Component {
 
@@ -51,6 +53,7 @@ class UserBalance extends Component {
   // .save() value of CURRENT_BALANCE to location in the DB so the changes reflect on backend as will
   
   render(){
+
 
     // console.log(this.state.current_balance, 'curent balance')
     console.log(UserContext._currentValue, 'user context in render')
