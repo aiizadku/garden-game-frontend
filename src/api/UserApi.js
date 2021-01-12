@@ -1,5 +1,5 @@
 const registerUser = (userInfo) => {
-  console.log(userInfo)
+  // console.log(userInfo)
   return fetch('http://localhost:8000/gardens/users/', {
     method: 'POST',
     headers: {

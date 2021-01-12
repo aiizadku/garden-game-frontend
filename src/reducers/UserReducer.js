@@ -9,6 +9,7 @@ export const userReducer = (state = null, action) => {
         username: action.data.user.username,
         token: action.data.token,
         garden: action.data.garden
+
       }
     case 'TOKEN_USER':
       // http://localhost:8000/gardens/current_user/

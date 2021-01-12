@@ -1,41 +1,48 @@
 import React, { Component } from 'react'
 import UserApi from '../../api/UserApi';
 import fetchUserBalanceByID from '../../api/UserApi';
-import { UserContext } from '../../contexts/UserContext'
+
+import { UserContext } from '../../contexts/UserContext';
 
 
 class UserBalance extends Component {
+
+  static contextType = UserContext
 
   state = {
     current_balance: 0
   }
 
   componentDidMount(){
-    // TO DO: 
-    // argument for fetchUserBalance needs to be current user's ID
-    UserApi.fetchUserBalanceByID(1).then((data) => this.setState({ current_balance: data.current_balance}))
+    const { id } = this.context.user
+    
+    UserApi.fetchUserBalanceByID(id).then((data) => this.setState({ current_balance: data.current_balance}))
+    // console.log("state", this.state.userID)
+    // console.log(this.state.userID, 'user context in component did mount')
     
   }
 
   addMoney = () => {
+    const { id } = this.context.user
     const addedAmountObject = {
-      user: 1,
+      user: id,
       current_balance: this.state.current_balance + 10
     }
     console.log('adding money')
-    UserApi.addToBalanceByID(1, addedAmountObject).then((data) => {
+    UserApi.addToBalanceByID(id, addedAmountObject).then((data) => {
       this.setState({ current_balance: data.current_balance})
       console.log(data.current_balance)
     }) 
   }
 
   subtractMoney = () => {
+    const { id } = this.context.user
     const subtractedAmountObject = {
-      user: 1,
+      user: id,
       current_balance: this.state.current_balance - 10
     }
     console.log('subtracting money')
-    UserApi.addToBalanceByID(1, subtractedAmountObject).then((data) => {
+    UserApi.addToBalanceByID(id, subtractedAmountObject).then((data) => {
       this.setState({ current_balance: data.current_balance})
       console.log(data.current_balance)
     }) 
@@ -46,7 +53,11 @@ class UserBalance extends Component {
   // .save() value of CURRENT_BALANCE to location in the DB so the changes reflect on backend as will
   
   render(){
-    console.log(this.state.current_balance)
+
+
+    // console.log(this.state.current_balance, 'curent balance')
+    console.log(UserContext._currentValue, 'user context in render')
+
     const { current_balance } = this.state
 
     return (
