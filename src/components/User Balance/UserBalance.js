@@ -15,6 +15,8 @@ class UserBalance extends Component {
 
   componentDidMount(){
     const { id } = this.context.user
+
+    console.log('user context', UserContext._currentValue)
     
     UserApi.fetchUserBalanceByID(id).then((data) => this.setState({ current_balance: data.current_balance}))
     // console.log("state", this.state.userID)
@@ -64,7 +66,11 @@ class UserBalance extends Component {
       <div>
         User Balance: { current_balance } 
         <button onClick={this.addMoney}>add money</button>
+        {
+          current_balance > 0
+          &&
         <button onClick={this.subtractMoney}>subtract money</button>
+        }
       </div>
     )
   }

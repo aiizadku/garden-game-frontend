@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
 import { UserContext } from '../../contexts/UserContext'
+import { useContext } from "react";
 
 // [row][col]
 const exampleData = {
@@ -72,8 +73,9 @@ const useStyles = makeStyles({
 
 const Garden = (props) => {
 
-  const userRow = UserContext._currentValue.user.garden.rows
-  const userColumn = UserContext._currentValue.user.garden.columns
+  const {user} = useContext(UserContext)
+  const userRow = user.garden.rows
+  const userColumn = user.garden.columns
 
   const makeGardenGrid = (rows, cols) => {
     let gardenPlots = [];
