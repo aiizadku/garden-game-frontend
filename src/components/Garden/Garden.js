@@ -1,9 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
-import { harvestPlant } from "../../api/GameApi";
+import { harvestPlant, getPlantDetail } from "../../api/GameApi";
 import { UserContext } from '../../contexts/UserContext'
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import UserApi from '../../api/UserApi';
+import addMoney from '../User Balance/UserBalance';
 
 // [row][col]
 const exampleData = {
@@ -72,14 +74,20 @@ const useStyles = makeStyles({
   }
 });
 
-const handleHarvest = (plantId, id) => {
-  harvestPlant(plantId); // Gives exp and $
-  // Remove plant with id from garden
-  console.log(id); // plot#-#, first is row, second is column
-  console.log("REMOVE ME - garden.js - handleHarvest.");
-}
+
 
 const Garden = (props) => {
+  const [amountToAdd, setAmountToAdd] = useState(0)
+  const handleHarvest = (plantId, id) => {
+    getPlantDetail(plantId).then((response)=> response.json()).then((data)=>{
+      setAmountToAdd(data.currency)
+    })
+    console.log(amountToAdd)
+    props.addMoney(amountToAdd)
+    // Remove plant with id from garden
+    console.log(id); // plot#-#, first is row, second is column
+    console.log("REMOVE ME - garden.js - handleHarvest.");
+  }
 
   const {user} = useContext(UserContext)
   const userRow = user.garden.rows
@@ -98,6 +106,7 @@ const Garden = (props) => {
               isPlant={true}
               growthPercent={exampleData["plants"][r][c]["growthPercent"]}
               handleHarvest={handleHarvest}
+              subtractMoney={props.subtractMoney}
               />
           </div>
         );
@@ -111,6 +120,7 @@ const Garden = (props) => {
               isPlant={false}
               growthPercent={null}
               handleHarvest={handleHarvest}
+              subtractMoney={props.subtractMoney}
               />
           </div>
       )
@@ -144,6 +154,9 @@ const Garden = (props) => {
       {makeGardenGrid(userRow, userColumn)}
     </div>
   );
+
+
+  
 }
 
 export default Garden;

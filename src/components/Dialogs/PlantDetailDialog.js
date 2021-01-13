@@ -19,6 +19,7 @@ const PlantDetailDialog = props => {
       .then(json=>setPlantInfo(json));
     }, [props]
   );
+
   return(
     <div>
       <Dialog
@@ -49,7 +50,7 @@ const PlantDetailDialog = props => {
             ? <Button variant="contained" onClick={(e)=>{e.stopPropagation(); props.handleHarvest()}} color="secondary">
                 Harvest
               </Button>
-            : <Button variant="contained" onClick={(e)=>{e.stopPropagation(); props.handleWater()}} color="primary">
+            : <Button variant="contained" onClick={(e)=>{e.stopPropagation()}} color="primary">
                 Water
               </Button>
           }
