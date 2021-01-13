@@ -1,5 +1,5 @@
 const registerUser = (userInfo) => {
-  console.log(userInfo)
+  // console.log(userInfo)
   return fetch('http://localhost:8000/gardens/users/', {
     method: 'POST',
     headers: {
@@ -37,6 +37,16 @@ const currentUser = (token) => {
   })
 }
 
+const userGarden = (token) => {
+  return fetch('http://localhost:8000/gardens/garden/', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `JWT ${token}`
+    }
+  })
+}
+
 const fetchUserBalanceByID = (userID) => {
   return fetch(`http://127.0.0.1:8000/api/profile/${userID}`).then((response) => response.json())
 }
@@ -55,6 +65,7 @@ export default {
   registerUser,
   login,
   currentUser,
+  userGarden,
   fetchUserBalanceByID,
   addToBalanceByID,
 }
