@@ -3,16 +3,17 @@ import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
 import { harvestPlant } from "../../api/GameApi";
 import { UserContext } from '../../contexts/UserContext'
+import { useContext } from "react";
 
 // [row][col]
 const exampleData = {
   "plants": [
     [
-      {id:0, growthPercent: 0},
-      {id:1, growthPercent: 0},
-      {id:2, growthPercent: 0},
-      {id:3, growthPercent: 0},
-      {id:4, growthPercent: 0}
+      {id:7, growthPercent: 100},
+      {id:1, growthPercent: 100},
+      {id:2, growthPercent: 100},
+      {id:3, growthPercent: 100},
+      {id:4, growthPercent: 100}
     ],
     [
       {id:0, growthPercent: 20},
@@ -80,8 +81,9 @@ const handleHarvest = (plantId, id) => {
 
 const Garden = (props) => {
 
-  const userRow = UserContext._currentValue.user.garden.rows
-  const userColumn = UserContext._currentValue.user.garden.columns
+  const {user} = useContext(UserContext)
+  const userRow = user.garden.rows
+  const userColumn = user.garden.columns
 
   const makeGardenGrid = (rows, cols) => {
     let gardenPlots = [];
