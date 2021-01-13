@@ -1,9 +1,8 @@
 import React from 'react';
 import getPlantDisplay from '../../images/images';
 import gsap from 'gsap';
-import PlantDetailDialog from '../ClickMenu/PlantDetailDialog';
+import PlantDetailDialog from '../Dialogs/PlantDetailDialog';
 import { makeStyles } from '@material-ui/core';
-import { harvestPlant } from "../../api/GameApi";
 
 const useStyles = makeStyles({
   plantContainer: {

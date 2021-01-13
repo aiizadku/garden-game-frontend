@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
-import { harvestPlant, getSeeds } from "../../api/GameApi";
+import { harvestPlant } from "../../api/GameApi";
 
 // [row][col]
 const exampleData = {

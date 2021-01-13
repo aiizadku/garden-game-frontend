@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Plant from './Plant';
-import PlantListDialog from '../ClickMenu/PlantListDialog';
+import PlantListDialog from '../Dialogs/PlantListDialog';
 import { plantSeed } from '../../api/GameApi';
 
 
