@@ -6,7 +6,7 @@ const harvestPlant = (plantId) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `JWT ${token}`
+      'Auhorization': `JWT ${token}`
     },
     body: JSON.stringify({"plantId": plantId})
   })
@@ -63,5 +63,5 @@ export {
   harvestPlant,
   getSeeds,
   plantSeed,
-  getPlantDetail
+  getPlantDetail,
  };
