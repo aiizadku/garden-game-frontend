@@ -9,11 +9,11 @@ import { useContext } from "react";
 const exampleData = {
   "plants": [
     [
-      {id:0, growthPercent: 0},
-      {id:1, growthPercent: 0},
-      {id:2, growthPercent: 0},
-      {id:3, growthPercent: 0},
-      {id:4, growthPercent: 0}
+      {id:7, growthPercent: 100},
+      {id:1, growthPercent: 100},
+      {id:2, growthPercent: 100},
+      {id:3, growthPercent: 100},
+      {id:4, growthPercent: 100}
     ],
     [
       {id:0, growthPercent: 20},
