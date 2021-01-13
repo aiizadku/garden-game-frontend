@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
+import { harvestPlant } from "../../api/GameApi";
 import { UserContext } from '../../contexts/UserContext'
 import { useContext } from "react";
 
@@ -71,6 +72,13 @@ const useStyles = makeStyles({
   }
 });
 
+const handleHarvest = (plantId, id) => {
+  harvestPlant(plantId); // Gives exp and $
+  // Remove plant with id from garden
+  console.log(id); // plot#-#, first is row, second is column
+  console.log("REMOVE ME - garden.js - handleHarvest.");
+}
+
 const Garden = (props) => {
 
   const {user} = useContext(UserContext)
@@ -89,7 +97,8 @@ const Garden = (props) => {
               id={`plot${r}-${c}`}
               isPlant={true}
               growthPercent={exampleData["plants"][r][c]["growthPercent"]}
-            />
+              handleHarvest={handleHarvest}
+              />
           </div>
         );
       }
@@ -101,7 +110,8 @@ const Garden = (props) => {
               id={`plot${r}-${cols}`}
               isPlant={false}
               growthPercent={null}
-            />
+              handleHarvest={handleHarvest}
+              />
           </div>
       )
       gardenPlots.push(
@@ -116,9 +126,19 @@ const Garden = (props) => {
       </div>
     );
   }
+
+  // const [allSeeds, setAllSeeds] = React.useState([]);
+  
+  // React.useEffect(
+  //   ()=>{
+  //     getSeeds()
+  //     .then(resp=>resp.json())
+  //     .then(json=>setAllSeeds(json["plants"]));
+  //   }, []
+  // );
   
   const classes = useStyles();
-
+  
   return (
     <div className={classes.centered}>
       {makeGardenGrid(userRow, userColumn)}

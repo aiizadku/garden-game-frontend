@@ -1,9 +1,8 @@
 import React from 'react';
 import getPlantDisplay from '../../images/images';
 import gsap from 'gsap';
-import PlantDetailDialog from '../ClickMenu/ClickMenu';
+import PlantDetailDialog from '../Dialogs/PlantDetailDialog';
 import { makeStyles } from '@material-ui/core';
-
 
 const useStyles = makeStyles({
   plantContainer: {
@@ -20,7 +19,12 @@ const useStyles = makeStyles({
   }
 })
 
-
+/**
+ * Displays the plant, if planted.
+ * Opens seed menu if no plant, and the plot has been clicked.
+ * Expects: handleHarvest, id, plantId, growthPercent
+ * @param {object} props 
+ */
 const Plant = (props) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -38,6 +42,7 @@ const Plant = (props) => {
   };
 
   const handleClickEvent = (e) => {
+    e.stopPropagation();
     if (!isMenuOpen) {
       setIsMenuOpen(true);
       console.log(`Plant ${props.id} clicked`);
@@ -51,6 +56,7 @@ const Plant = (props) => {
   };
   const handleHarvest = () => {
     console.log(`Harvest plant ${props.id}`);
+    props.handleHarvest(props.plantId, props.id);
     setIsMenuOpen(false);
   };
   const handleBack = () => {
@@ -76,15 +82,20 @@ const Plant = (props) => {
           : "Plants must have unique IDs in props."
         }
       </div>
-      <PlantDetailDialog
-        plotId={props.id}
-        plantId={props.plantId}
-        isMenuOpen={isMenuOpen}
-        handleHarvest={handleHarvest}
-        handleWater={handleWater}
-        handleBack={handleBack}
-        growthStatus={getGrowthStatus(props.growthPercent)}
-      />
+      {
+        isMenuOpen
+        ? 
+          <PlantDetailDialog
+            plotId={props.id}
+            plantId={props.plantId}
+            isMenuOpen={isMenuOpen}
+            handleHarvest={handleHarvest}
+            handleWater={handleWater}
+            handleBack={handleBack}
+            growthStatus={getGrowthStatus(props.growthPercent)}
+          />
+        : null
+      }
     </>
   );
 }
