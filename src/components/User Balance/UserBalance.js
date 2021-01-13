@@ -28,10 +28,10 @@ class UserBalance extends Component {
       user: id,
       current_balance: this.state.current_balance + 10
     }
-    console.log('adding money')
+    // console.log('adding money')
     UserApi.addToBalanceByID(id, addedAmountObject).then((data) => {
       this.setState({ current_balance: data.current_balance})
-      console.log(data.current_balance)
+      // console.log(data.current_balance)
     }) 
   }
 
@@ -41,10 +41,10 @@ class UserBalance extends Component {
       user: id,
       current_balance: this.state.current_balance - 10
     }
-    console.log('subtracting money')
+    // console.log('subtracting money')
     UserApi.addToBalanceByID(id, subtractedAmountObject).then((data) => {
       this.setState({ current_balance: data.current_balance})
-      console.log(data.current_balance)
+      // console.log(data.current_balance)
     }) 
   }
   
@@ -56,7 +56,7 @@ class UserBalance extends Component {
 
 
     // console.log(this.state.current_balance, 'curent balance')
-    console.log(UserContext._currentValue, 'user context in render')
+    // console.log(UserContext._currentValue, 'user context in render')
 
     const { current_balance } = this.state
 

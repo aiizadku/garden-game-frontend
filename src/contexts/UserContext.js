@@ -12,7 +12,7 @@ const UserContextProvider = (props) => {
       UserAPI.currentUser(localData)
       .then(res => res.json())
       .then(data => {
-        console.log('current user', data)
+        // console.log('current user', data)
         if (data['username']) {
           dispatch({type: 'TOKEN_USER', data})
         } else {
