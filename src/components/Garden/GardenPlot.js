@@ -1,6 +1,9 @@
+import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Plant from './Plant';
+import PlantListDialog from '../Dialogs/PlantListDialog';
+import { plantSeed } from '../../api/GameApi';
 
 
 const useStyles = makeStyles({
@@ -21,21 +24,52 @@ const useStyles = makeStyles({
   }
 });
 
+/**
+ * Expects: handleHarvest, plantId, growthPercent
+ * @param {object} props 
+ */
 const GardenPlot = (props) => {
   const classes = useStyles();
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  const handleSelection = (plantId) => {
+    setIsMenuOpen(false);
+    // id={`plot${r}-${c}`}
+    const rowColData = props.id.slice(4).split('-'); // r-c
+    let data = {
+      "row": rowColData[0],
+      "column": rowColData[1],
+      "plantId": plantId
+    }
+    console.log(data);
+    plantSeed(data);
+  }
+  const handleBack = () => setIsMenuOpen(false);
+
   return(
     <Box className={classes.plot}>
-      <Box className={classes.plotContent}>
+      <Box className={classes.plotContent} onClick={()=>setIsMenuOpen(true)}>
         {
           props.isPlant
           ? <Plant
               id={props.id}
               plantId={props.plantId}
               growthPercent={props.growthPercent}
+              handleHarvest={props.handleHarvest}
             />
           : null
         }
       </Box>
+      {
+        isMenuOpen
+        ?
+          <PlantListDialog
+            isMenuOpen={isMenuOpen}
+            handleSelection={handleSelection}
+            handleBack={handleBack}
+          />
+        : null
+      }
     </Box>
   );
 };
