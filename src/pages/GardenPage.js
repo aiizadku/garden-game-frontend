@@ -14,7 +14,7 @@ const GardenPage = props => {
   return(
     <div className={classes.container}>
       <Sky />
-      <TestButton />
+      {/*<TestButton />*/ null}
       <Ground />
     </div>
   );

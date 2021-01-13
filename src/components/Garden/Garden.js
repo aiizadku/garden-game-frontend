@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
-import {harvestPlant} from "../../api/GameApi";
+import { harvestPlant, getSeeds } from "../../api/GameApi";
 
 // [row][col]
 const exampleData = {
@@ -92,7 +92,7 @@ const Garden = (props) => {
               isPlant={true}
               growthPercent={exampleData["plants"][r][c]["growthPercent"]}
               handleHarvest={handleHarvest}
-            />
+              />
           </div>
         );
       }
@@ -104,7 +104,8 @@ const Garden = (props) => {
               id={`plot${r}-${cols}`}
               isPlant={false}
               growthPercent={null}
-            />
+              handleHarvest={handleHarvest}
+              />
           </div>
       )
       gardenPlots.push(
@@ -119,9 +120,19 @@ const Garden = (props) => {
       </div>
     );
   }
+
+  // const [allSeeds, setAllSeeds] = React.useState([]);
+  
+  // React.useEffect(
+  //   ()=>{
+  //     getSeeds()
+  //     .then(resp=>resp.json())
+  //     .then(json=>setAllSeeds(json["plants"]));
+  //   }, []
+  // );
   
   const classes = useStyles();
-
+  
   return (
     <div className={classes.centered}>
       {makeGardenGrid(4, 5)}

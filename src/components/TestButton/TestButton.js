@@ -1,11 +1,12 @@
 import { Button } from "@material-ui/core"
-import { harvestPlant } from "../../api/GameApi";
+import { harvestPlant, getSeeds } from "../../api/GameApi";
 
 const TestButton = props => {
-  const sendRequest = () => harvestPlant(1);
+  // const sendRequest = () => harvestPlant(1);
+  const sendRequest = () => getSeeds().then(resp=>resp.json()).then(json=>console.log(json));
   return(
     <div>
-      Testing {props.name ? props.name : null}
+      Testing getSeeds
       <Button onClick={sendRequest}>Test</Button>
     </div>
   )

@@ -43,6 +43,7 @@ const Plant = (props) => {
   };
 
   const handleClickEvent = (e) => {
+    e.stopPropagation();
     if (!isMenuOpen) {
       setIsMenuOpen(true);
       console.log(`Plant ${props.id} clicked`);
@@ -82,15 +83,20 @@ const Plant = (props) => {
           : "Plants must have unique IDs in props."
         }
       </div>
-      <PlantDetailDialog
-        plotId={props.id}
-        plantId={props.plantId}
-        isMenuOpen={isMenuOpen}
-        handleHarvest={handleHarvest}
-        handleWater={handleWater}
-        handleBack={handleBack}
-        growthStatus={getGrowthStatus(props.growthPercent)}
-      />
+      {
+        isMenuOpen
+        ? 
+          <PlantDetailDialog
+            plotId={props.id}
+            plantId={props.plantId}
+            isMenuOpen={isMenuOpen}
+            handleHarvest={handleHarvest}
+            handleWater={handleWater}
+            handleBack={handleBack}
+            growthStatus={getGrowthStatus(props.growthPercent)}
+          />
+        : null
+      }
     </>
   );
 }
