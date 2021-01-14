@@ -33,7 +33,6 @@ const Ground = props => {
     console.log('adding money')
     UserApi.addToBalanceByID(id, addedAmountObject).then((data) => {
       setCurrentBalance(data.current_balance)
-      console.log(data.current_balance)
       }
     ) 
   }
@@ -45,7 +44,6 @@ const Ground = props => {
     console.log('subtracting money')
     UserApi.addToBalanceByID(id, subtractedAmountObject).then((data) => {
       setCurrentBalance(data.current_balance)
-      console.log(data.current_balance)
       }
     ) 
   }

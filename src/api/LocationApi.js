@@ -11,7 +11,7 @@ const getLocation = async() => {
     }
   );
   const location = await response.json();
-  console.log (location)
+  // console.log (location)
 //   const userCity = await location.city
 //   const userState = await location.state
 

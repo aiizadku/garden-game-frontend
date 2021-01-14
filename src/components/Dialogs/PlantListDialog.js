@@ -1,36 +1,72 @@
-import React from 'react';
-import { Dialog, DialogTitle, DialogActions, Button, Avatar, List, ListItem, ListItemAvatar, ListItemText, makeStyles, DialogContent } from "@material-ui/core";
-import { getSeeds } from '../../api/GameApi';
-import getPlantDisplay from '../../images/images';
+import React, { useContext, useState, useEffect, useForceUpdate } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
+  Avatar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  makeStyles,
+  DialogContent,
+} from "@material-ui/core";
+import { getSeeds } from "../../api/GameApi";
+import getPlantDisplay from "../../images/images";
+import { UserContext } from "../../contexts/UserContext";
 
 const useStyles = makeStyles({
-  "root": {
+  root: {
     width: 400,
-    height: 300
+    height: 300,
   },
-  "title": {
+  title: {
     backgroundColor: "saddlebrown",
-    borderBottom: "4px solid #7B3503"
+    borderBottom: "4px solid #7B3503",
   },
-  "content": {
+  content: {
     backgroundColor: "tan",
   },
-  "hover": {
+  hover: {
     "&:hover": {
-      backgroundColor: "wheat"
-    }
-  }
-})
+      backgroundColor: "wheat",
+    },
+  },
+});
+const greyStyles = makeStyles({
+  root: {
+    width: 400,
+    height: 300,
+  },
+  title: {
+    backgroundColor: "gray",
+    borderBottom: "4px solid #7B3503",
+  },
+  content: {
+    backgroundColor: "gray",
+  },
+  hover: {
+    "&:hover": {
+      backgroundColor: "gray",
+    },
+  },
+});
 
 /**
  * Seed buying menu controlled by GardenPlot.
  * Expects: isMenuOpen, handleSelection, handleBack
- * @param {object} props 
+ * @param {object} props
  */
-const PlantList = props => {
+const PlantList = (props) => {
+  const { user } = useContext(UserContext);
+  const { current_balance } = user.profile;
+  // user.profile.current_balance for the users balance
   const classes = useStyles();
+  const grey = greyStyles();
   //const [styleClass, setStyleClass] = React.useState(classes.content);
   const [allSeeds, setAllSeeds] = React.useState([]);
+
 
   // React.useEffect(
   //   ()=>{
@@ -47,45 +83,76 @@ const PlantList = props => {
   //     })();
   //   }, []
   // );
-  React.useEffect(
-    ()=>{
-      getSeeds()
-      .then(resp=>resp.json())
-      .then(json=>setAllSeeds(json["plants"]));
-    }, []
-  );
+  React.useEffect(() => {
+    getSeeds()
+      .then((resp) => resp.json())
+      .then((json) => {
+        console.log(json);
+        setAllSeeds(json["plants"]);
+      });
+  }, []);
 
   const makeListItem = (plantInfo) => {
-    return(
-      <ListItem alignItems="flex-start" className={classes.hover} onClick={()=>props.handleSelection(plantInfo.id)} >
-        <ListItemAvatar>
-          <Avatar alt={plantInfo.flower_name} src={getPlantDisplay(plantInfo.id, "Mature")} />
-        </ListItemAvatar>
-        <ListItemText>
-          {`ID: ${plantInfo.id}, flower_name: ${plantInfo.flower_name}, cost: ${plantInfo.cost}, time to mature: ${plantInfo.time_to_mature}, exp value: ${plantInfo.exp_value}`}
-        </ListItemText>
-      </ListItem>
+    return (
+      <div>
+        {plantInfo.cost <= current_balance ? (
+          <ListItem
+            alignItems="flex-start"
+            className={classes.hover}
+            onClick={() => props.handleSelection(plantInfo.id)}
+          >
+            <ListItemAvatar>
+              <Avatar
+                alt={plantInfo.flower_name}
+                src={getPlantDisplay(plantInfo.id, "Mature")}
+              />
+            </ListItemAvatar>
+            <ListItemText>
+              {`ID: ${plantInfo.id}, flower_name: ${plantInfo.flower_name}, cost: ${plantInfo.cost}, time to mature: ${plantInfo.time_to_mature}, exp value: ${plantInfo.exp_value}`}
+            </ListItemText>
+          </ListItem>
+        ) : (
+          <ListItem alignItems="flex-start" className={grey.hover}>
+            <ListItemAvatar>
+              <Avatar
+                alt={plantInfo.flower_name}
+                src={getPlantDisplay(plantInfo.id, "Grey")}
+              />
+            </ListItemAvatar>
+            <ListItemText>
+              {`ID: ${plantInfo.id}, flower_name: ${plantInfo.flower_name}, cost: ${plantInfo.cost}, time to mature: ${plantInfo.time_to_mature}, exp value: ${plantInfo.exp_value}`}
+            </ListItemText>
+          </ListItem>
+        )}
+      </div>
     );
-  }
+  };
 
-  return(
+  // const filteredSeeds = allSeeds.map((seed) => seed.cost > current_balance);
+  // filteredSeeds &&
+
+  // console.log("all seeds", filteredSeeds);
+
+  return (
     <Dialog open={props.isMenuOpen}>
       <DialogTitle className={classes.title}>Buy a Plant?</DialogTitle>
       <DialogContent className={classes.content}>
         <List className={classes.root}>
-          {
-            allSeeds.length
-            ? allSeeds.map(makeListItem)
-            : null
-          }
+          {allSeeds.length 
+            ? allSeeds.map(makeListItem) 
+            : null}
         </List>
       </DialogContent>
-      <DialogActions style={{backgroundColor: "tan"}}>
-        <Button variant="contained" color="default" onClick={props.handleBack}>Back</Button>
+      <DialogActions style={{ backgroundColor: "tan" }}>
+        <Button variant="contained" color="default" onClick={props.handleBack}>
+          Back
+        </Button>
+        <Button variant="contained" color="default" >
+          Refresh
+        </Button>
       </DialogActions>
     </Dialog>
   );
-}
-
+};
 
 export default PlantList;

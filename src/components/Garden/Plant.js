@@ -45,7 +45,7 @@ const Plant = (props) => {
     e.stopPropagation();
     if (!isMenuOpen) {
       setIsMenuOpen(true);
-      console.log(`Plant ${props.id} clicked`);
+      // console.log(`Plant ${props.id} clicked`);
     }
     //e.stopPropagation(); // Prevent further click events behind plant.
   }
