@@ -1,7 +1,5 @@
 const harvestPlant = (plantId, row, column) => {
-  // console.log(plantId)
   const token = localStorage.getItem("token");
-  // console.log(token);
   return fetch('http://localhost:8000/gardens/harvest/', {
     method: 'POST',
     headers: {

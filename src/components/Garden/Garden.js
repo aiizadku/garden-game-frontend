@@ -28,7 +28,7 @@ const useStyles = makeStyles({
     width: 100,
     height: 100,
     position: 'relative',
-    border: "2px solid white"
+    border: "2px solid #7B3503"
   },
   centered: {
     position: "absolute",
@@ -44,12 +44,11 @@ const useStyles = makeStyles({
  * @param {object} props 
  */
 const Garden = (props) => {
-
   // Variables //////
-  const {user} = useContext(UserContext);
-  const userRow = user.garden.rows;
-  const userColumn = user.garden.columns;
-  const [jsonResponse, setJsonResponse] = React.useState({});
+  const {isLoggedIn, gameState} = useContext(UserContext)
+  const userRow = gameState.garden.rows;
+  const userColumn = gameState.garden.columns;
+  const [GardenjsonObject, setGardenJsonObject] = React.useState({});
   const [gardenGrid, setGardenGrid] = React.useState([]);
   const classes = useStyles();
 
@@ -73,6 +72,11 @@ const Garden = (props) => {
             column: rowColData[1]
           }
       });
+      getPlantDetail(plantId)
+      .then((response)=> response.json())
+      .then((data)=>{
+        props.addMoney(data.currency)
+      })
     });
   }
 
@@ -96,10 +100,10 @@ const Garden = (props) => {
   };
 
   /**
-   * 
+   * Updates grow time
    * @param {number} row 
    * @param {number} column 
-   * @param {number} elapsedTime (ms)
+   * @param {number} elapsedTime
    */
   const updateElapsedGrowTime = (row, column, elapsedTime) => {
     dispatch({
@@ -113,7 +117,7 @@ const Garden = (props) => {
   }
 
   const updateGarden = (gardenPlotsData) => {
-    console.log("updateGarden called -> setGardenGrid");
+    // console.log("updateGarden called -> setGardenGrid");
     // Creates components based on plant data in gardenPlotsData
     if (!gardenPlotsData || !gardenPlotsData.length) return("Loading");
 
@@ -122,12 +126,13 @@ const Garden = (props) => {
       let gardenRow = [];
       for (let c = 0; c < gardenPlotsData[r].length; c++) {
         gardenRow.push(
-          <div classname={classes.flexPlot}>
+          <div className={classes.flexPlot}>
             <GardenPlot
               handleHarvest={handleHarvest}
               createNewPlant={createNewPlant}
               updateElapsedGrowTime={updateElapsedGrowTime}
               {...gardenPlotsData[r][c]}
+              subtractMoney={props.subtractMoney}
               />
           </div>
         );
@@ -180,15 +185,15 @@ const Garden = (props) => {
           gardenArray.push(gardenRow);
         }
 
-        if (!Object.keys(jsonResponse).length) {
+        if (!Object.keys(GardenjsonObject).length) {
           console.log("Empty json object")
           return [];
         }
 
         // Fill in loaded plants
         console.log("Checking for loaded plants.")
-        console.log(`Found ${jsonResponse["plants"].length} loaded plants`)
-        for (let plant of jsonResponse["plants"]) {
+        console.log(`Found ${GardenjsonObject["plants"].length} loaded plants`)
+        for (let plant of GardenjsonObject["plants"]) {
           console.log(plant)
           gardenArray[plant.row_num][plant.column_num] = {
             isPlant: true,
@@ -260,10 +265,10 @@ const Garden = (props) => {
     ()=>{
       loadGarden()
       .then(resp=>resp.json())
-      .then(json=>setJsonResponse(json));
+      .then(json=>setGardenJsonObject(json));
     }, []
   );
-  // Called when jsonResponse updates, or garden size changes.
+  // Called when GardenjsonObject updates, or garden size changes.
   React.useEffect(
     ()=>{
       // Prevent operations if garden hasn't been loaded yet
@@ -276,13 +281,14 @@ const Garden = (props) => {
           'column': userColumn
         }
       })
-    }, [jsonResponse, userRow, userColumn]
+    }, [GardenjsonObject, userRow, userColumn]
   );
   //Update gardenGrid when gardenPlotsData is updated
   React.useEffect(
     ()=>updateGarden(gardenPlotsData), [gardenPlotsData, classes]
   );
   
+  console.log("Are we logged in? ", isLoggedIn)
   return (
     <div className={classes.centered}>
       {gardenGrid}

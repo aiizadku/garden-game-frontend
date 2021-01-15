@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core";
 import TestButton from "../components/TestButton/TestButton";
 import getLocation from "../api/LocationApi";
 import React, { useEffect, useState } from "react";
+import getIP from "../api/LocationApi";
 
 const useStyles = makeStyles({
   container: {
@@ -17,10 +18,10 @@ const GardenPage = (props) => {
   // const [error, setError] = useState({ error: false, message: null });
 
   // useEffect(() => {
-  //   getLocation();
+  //   getIP();
   // });
 
-  getLocation()
+  // getLocation();
   const classes = useStyles();
   return (
     <div className={classes.container}>
