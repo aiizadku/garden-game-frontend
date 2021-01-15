@@ -11,10 +11,9 @@ import getIP from "../api/LocationApi";
 
 const LoginPage = (props) => {
   const [weather, setWeather] = useState("");
-  // console.log(props);
-  const [error, setError] = useState({ error: false, message: null });
-  const { dispatch } = useContext(UserContext);
-
+  const [error, setError] = useState({'error': false, 'message': null})
+  const { setLoggedIn, gameState, setGameData } = useContext(UserContext)
+  
   // useEffect(() => {
   //   getIP()
   // });
@@ -32,9 +31,12 @@ const LoginPage = (props) => {
     if (data["non_field_errors"]) {
       setError({ error: true, message: "Invalid username or password." });
     } else {
-      dispatch({ type: "LOGIN_USER", data });
-      // console.log("go to the HomePage")
-      return props.history.push("/garden");
+      if(data.hasOwnProperty('token')){
+        setGameData(data) // updating gameState context with actual data
+        setLoggedIn(data)
+      }
+      
+      return props.history.push('/garden')
     }
   };
 

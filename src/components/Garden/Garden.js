@@ -1,17 +1,21 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
+import { harvestPlant, getPlantDetail } from "../../api/GameApi";
 import { UserContext } from '../../contexts/UserContext'
+import { useContext, useState } from "react";
+import UserApi from '../../api/UserApi';
+import addMoney from '../User Balance/UserBalance';
 
 // [row][col]
 const exampleData = {
   "plants": [
     [
-      {id:0, growthPercent: 0},
-      {id:1, growthPercent: 0},
-      {id:2, growthPercent: 0},
-      {id:3, growthPercent: 0},
-      {id:4, growthPercent: 0}
+      {id:7, growthPercent: 100},
+      {id:1, growthPercent: 100},
+      {id:2, growthPercent: 100},
+      {id:3, growthPercent: 100},
+      {id:4, growthPercent: 100}
     ],
     [
       {id:0, growthPercent: 20},
@@ -70,10 +74,25 @@ const useStyles = makeStyles({
   }
 });
 
-const Garden = (props) => {
 
-  const userRow = UserContext._currentValue.user.garden.rows
-  const userColumn = UserContext._currentValue.user.garden.columns
+
+const Garden = (props) => {
+  const [amountToAdd, setAmountToAdd] = useState(0)
+  const handleHarvest = (plantId, id) => {
+    getPlantDetail(plantId).then((response)=> response.json()).then((data)=>{
+      setAmountToAdd(data.currency)
+    })
+    console.log(amountToAdd)
+    props.addMoney(amountToAdd)
+    // Remove plant with id from garden
+    console.log(id); // plot#-#, first is row, second is column
+    console.log("REMOVE ME - garden.js - handleHarvest.");
+  }
+
+  const {isLoggedIn, gameState} = useContext(UserContext)
+  console.log("gameState", gameState)
+  const userRow = gameState.garden.rows
+  const userColumn = gameState.garden.columns
 
   const makeGardenGrid = (rows, cols) => {
     let gardenPlots = [];
@@ -81,25 +100,29 @@ const Garden = (props) => {
       let gardenRow = [];
       for (let c = 0; c < cols; c++) {
         gardenRow.push(
-          <div classname={classes.flexPlot}>
+          <div className={classes.flexPlot}>
             <GardenPlot
               plantId={exampleData["plants"][r][c]["id"]}
               id={`plot${r}-${c}`}
               isPlant={true}
               growthPercent={exampleData["plants"][r][c]["growthPercent"]}
-            />
+              handleHarvest={handleHarvest}
+              subtractMoney={props.subtractMoney}
+              />
           </div>
         );
       }
       // Add empty row just for demo purposes
       gardenRow.push(
-        <div classname={classes.flexPlot}>
+        <div className={classes.flexPlot}>
             <GardenPlot
               plantId={null}
               id={`plot${r}-${cols}`}
               isPlant={false}
               growthPercent={null}
-            />
+              handleHarvest={handleHarvest}
+              subtractMoney={props.subtractMoney}
+              />
           </div>
       )
       gardenPlots.push(
@@ -114,14 +137,27 @@ const Garden = (props) => {
       </div>
     );
   }
+
+  // const [allSeeds, setAllSeeds] = React.useState([]);
+  
+  // React.useEffect(
+  //   ()=>{
+  //     getSeeds()
+  //     .then(resp=>resp.json())
+  //     .then(json=>setAllSeeds(json["plants"]));
+  //   }, []
+  // );
   
   const classes = useStyles();
-
+  console.log("Are we logged in? ", isLoggedIn)
   return (
     <div className={classes.centered}>
       {makeGardenGrid(userRow, userColumn)}
     </div>
   );
+
+
+  
 }
 
 export default Garden;
