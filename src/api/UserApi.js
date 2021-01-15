@@ -10,7 +10,7 @@ const registerUser = (userInfo) => {
 }
 
 const login = async (userInfo) => {
-  console.log(userInfo)
+  // console.log(userInfo)
   try {
     
     let response = await fetch('http://localhost:8000/token-auth/', {

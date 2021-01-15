@@ -11,7 +11,7 @@ const getWeather = async (userCity, userState) => {
   );
   const condition = await response.json();
   const weather = await condition.weather[0].main;
-  console.log(weather)
+  // console.log(weather)
   return weather;
 };
 
