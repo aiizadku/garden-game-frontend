@@ -25,13 +25,16 @@ const useStyles = makeStyles({
 });
 
 /**
- * Expects: handleHarvest, plantId, growthPercent
+ * Expects: handleHarvest, createNewPlant, isPlant, plantId, id, remainingTime, timeToMature, isWatered, isHarvested, updateElapsedGrowTime
  * @param {object} props 
  */
 const GardenPlot = (props) => {
   const classes = useStyles();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
+  // Closes seed buying menu when seed is purchased.
+  // Notifies backend via GameApi.plantSeed.
+  // Updates frontend via Garden's createNewPlant
   const handleSelection = (plantId) => {
     setIsMenuOpen(false);
     // id={`plot${r}-${c}`}
@@ -41,9 +44,15 @@ const GardenPlot = (props) => {
       "column": rowColData[1],
       "plantId": plantId
     }
-    console.log(data);
-    plantSeed(data);
+    plantSeed(data)
+    .then(resp=>{
+      if (resp.ok)
+        props.createNewPlant(plantId, data.row, data.column); // Update frontend data.
+    }); // Backend API call. Updates database.
   }
+
+  // Closes the seed buying menu when back button is pressed.
+  // Passed to PlantListDialog.
   const handleBack = () => setIsMenuOpen(false);
 
   return(
@@ -54,8 +63,12 @@ const GardenPlot = (props) => {
           ? <Plant
               id={props.id}
               plantId={props.plantId}
-              growthPercent={props.growthPercent}
+              growthPercent={((props.timeToMature - props.remainingTime) / props.timeToMature)*100}
+              timeToMature={props.timeToMature}
+              remainingTime={props.remainingTime}
               handleHarvest={props.handleHarvest}
+              isWatered={props.isWatered}
+              updateElapsedGrowTime={props.updateElapsedGrowTime}
             />
           : null
         }

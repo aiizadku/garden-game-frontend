@@ -1,4 +1,4 @@
-const harvestPlant = (plantId) => {
+const harvestPlant = (plantId, row, column) => {
   // console.log(plantId)
   const token = localStorage.getItem("token");
   // console.log(token);
@@ -8,7 +8,11 @@ const harvestPlant = (plantId) => {
       'Content-Type': 'application/json',
       'Authorization': `JWT ${token}`
     },
-    body: JSON.stringify({"plantId": plantId})
+    body: JSON.stringify({
+      "plantId": plantId,
+      "row": row,
+      "column": column
+    })
   })
 }
 
@@ -59,9 +63,22 @@ const getPlantDetail = plantId => {
 };
 
 
+const loadGarden = () => {
+  const token = localStorage.getItem("token");
+  return fetch(`http://localhost:8000/gardens/load`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `JWT ${token}`
+    },
+  });
+};
+
+
 export { 
   harvestPlant,
   getSeeds,
   plantSeed,
-  getPlantDetail
+  getPlantDetail, 
+  loadGarden
  };
