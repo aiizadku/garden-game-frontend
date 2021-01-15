@@ -59,8 +59,8 @@ const greyStyles = makeStyles({
  * @param {object} props
  */
 const PlantList = (props) => {
-  const { user } = useContext(UserContext);
-  const { current_balance } = user.profile;
+  const { gameState } = useContext(UserContext);
+  const { current_balance } = gameState.profile;
   // user.profile.current_balance for the users balance
   const classes = useStyles();
   const grey = greyStyles();
@@ -146,9 +146,6 @@ const PlantList = (props) => {
       <DialogActions style={{ backgroundColor: "tan" }}>
         <Button variant="contained" color="default" onClick={props.handleBack}>
           Back
-        </Button>
-        <Button variant="contained" color="default" >
-          Refresh
         </Button>
       </DialogActions>
     </Dialog>

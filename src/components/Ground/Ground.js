@@ -16,16 +16,23 @@ const useStyles = makeStyles({
  * @param {object} props 
  */
 const Ground = props => {
-  const {user} = useContext(UserContext)
+  const { gameState } = useContext(UserContext)
+
   const classes = useStyles();
-  console.log('from ground js', user)
   const [currentBalance, setCurrentBalance] = useState(0)
-  const {id} = user
+  // const {id} = user
+
   useEffect(() => {
-    UserApi.fetchUserBalanceByID(id).then((data) => setCurrentBalance(data.current_balance))
+    const { id } = gameState.user
+    console.log("useEffect from Ground.js: ", gameState)
+    UserApi.fetchUserBalanceByID(id).then((data) => {
+      console.log("fetchUserBalance: ", data)
+      setCurrentBalance(data.current_balance)
+    })
   })
 
   const addMoney = (plantValue) => {
+    const { id } = gameState.user
     const addedAmountObject = {
       user: id,
       current_balance: currentBalance + plantValue
@@ -37,6 +44,7 @@ const Ground = props => {
     ) 
   }
   const subtractMoney = (plantValue) => {
+    const { id } = gameState.user
     const subtractedAmountObject = {
       user: id,
       current_balance: currentBalance - plantValue
