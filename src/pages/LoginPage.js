@@ -15,15 +15,9 @@ import { Redirect } from 'react-router'
 
 const LoginPage = (props) => {
   const [weather, setWeather] = useState("");
-  console.log(props);
   const [error, setError] = useState({'error': false, 'message': null})
-  const { dispatch } = useContext(UserContext)
+  const { setLoggedIn, gameState, setGameData } = useContext(UserContext)
   
-
-
-
-
-
   // useEffect(() => {
   //   getWeather(props.userCity, props.userState).then(json => {
   //     setWeather(json);
@@ -48,10 +42,11 @@ const LoginPage = (props) => {
     if (data['non_field_errors']) {
       setError({'error': true, 'message': 'Invalid username or password.'})
     } else {
+      if(data.hasOwnProperty('token')){
+        setGameData(data) // updating gameState context with actual data
+        setLoggedIn(data)
+      }
       
-
-      dispatch({type: 'LOGIN_USER', data})
-      console.log("go to the HomePage")
       return props.history.push('/garden')
     }
     

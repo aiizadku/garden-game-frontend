@@ -89,9 +89,10 @@ const Garden = (props) => {
     console.log("REMOVE ME - garden.js - handleHarvest.");
   }
 
-  const {user} = useContext(UserContext)
-  const userRow = user.garden.rows
-  const userColumn = user.garden.columns
+  const {isLoggedIn, gameState} = useContext(UserContext)
+  console.log("gameState", gameState)
+  const userRow = gameState.garden.rows
+  const userColumn = gameState.garden.columns
 
   const makeGardenGrid = (rows, cols) => {
     let gardenPlots = [];
@@ -99,7 +100,7 @@ const Garden = (props) => {
       let gardenRow = [];
       for (let c = 0; c < cols; c++) {
         gardenRow.push(
-          <div classname={classes.flexPlot}>
+          <div className={classes.flexPlot}>
             <GardenPlot
               plantId={exampleData["plants"][r][c]["id"]}
               id={`plot${r}-${c}`}
@@ -113,7 +114,7 @@ const Garden = (props) => {
       }
       // Add empty row just for demo purposes
       gardenRow.push(
-        <div classname={classes.flexPlot}>
+        <div className={classes.flexPlot}>
             <GardenPlot
               plantId={null}
               id={`plot${r}-${cols}`}
@@ -148,7 +149,7 @@ const Garden = (props) => {
   // );
   
   const classes = useStyles();
-  
+  console.log("Are we logged in? ", isLoggedIn)
   return (
     <div className={classes.centered}>
       {makeGardenGrid(userRow, userColumn)}
