@@ -5,7 +5,7 @@ import { harvestPlant, loadGarden, getPlantDetail } from "../../api/GameApi";
 import { UserContext } from '../../contexts/UserContext'
 import { useContext } from "react";
 
-// CSS styles
+// CSS styles //////
 const useStyles = makeStyles({
   flexContainer: {
     display: "inline-flex",
@@ -38,6 +38,7 @@ const useStyles = makeStyles({
   }
 });
 
+
 /**
  * Garden component contains GardenPlot components.
  * Major game functionality is controlled here.
@@ -60,43 +61,53 @@ const Garden = (props) => {
    * @param {string} id (`plot${row}-${column}`)
    */
   const handleHarvest = (plantId, id) => {
-    console.log(`Harvesting ${id}.`); // plot#-#, first is row, second is column
-    let rowColData = id.slice(4).split('-');
-    harvestPlant(plantId, rowColData[0], rowColData[1])
-    .then(resp=>{
-      if (resp.ok)
-        dispatch({
-          type: 'delete',
-          payload: {
-            row: rowColData[0],
-            column: rowColData[1]
-          }
-      });
-      getPlantDetail(plantId)
-      .then((response)=> response.json())
-      .then((data)=>{
-        props.addMoney(data.currency)
-      })
+    console.log(`Harvesting ${id}.`);
+    const [row, column] = id.slice(4).split('-');
+    // backend harvest
+    harvestPlant(plantId, row, column)
+    .then(resp=> {
+      if (resp.ok) {
+        // Frontend harvest
+        gardenPlotsData[row][column] = {
+          isPlant: false,
+          plantId: null,
+          id: `plot${row}-${column}`,
+          remainingTime: null,
+          timeToMature: null,
+          isWatered: false,
+          isHarvested: false
+        };
+        updateGarden(gardenPlotsData);
+      }
     });
-  }
+    getPlantDetail(plantId)
+    .then(response=>response.json())
+    .then(data=>props.addMoney(data.currency));
+  };
 
   /**
    * Creates a new plant on the frontend.
    * Called from GardenPlot, which handles the backend.
    * Will not be called if the backend cannot create a plant.
-   * @param {number} plant_id 
-   * @param {number} row 
-   * @param {number} column 
+   * @param {object} plantInfo
+   * @param {number} row
+   * @param {number} column
    */
-  const createNewPlant = (plant_id, row, column) => {
-    dispatch({
-      type: 'new',
-      payload: {
-        'row': row,
-        'column': column,
-        'plantId': plant_id
-      }
-    });
+  const createNewPlant = (plantInfo, row, column) => {
+    console.log(`Planting plant with plantID: ${plantInfo.id} in plot${row}-${column}`);
+    console.warn("WARNING: watered status set to true on planting. Change for weather effects when implemented");
+    // Fetch plant details from backend.
+    // Create new plant object and store in correct row, column.
+    gardenPlotsData[Number(row)][Number(column)] = {
+      isPlant: true,
+      plantId: plantInfo.id,
+      id: `plot${row}-${column}`,
+      remainingTime: plantInfo.time_to_mature,
+      timeToMature: plantInfo.time_to_mature,
+      isWatered: true,
+      isHarvested: false
+    }
+    updateGarden(gardenPlotsData);
   };
 
   /**
@@ -106,19 +117,20 @@ const Garden = (props) => {
    * @param {number} elapsedTime
    */
   const updateElapsedGrowTime = (row, column, elapsedTime) => {
-    dispatch({
-      type: 'update',
-      payload: {
-        'row': row,
-        'column': column,
-        'value': elapsedTime
-      }
-    });
+    gardenPlotsData[row][column]["remainingTime"] -= elapsedTime;
+    updateGarden(gardenPlotsData);
+    // dispatch({
+    //   type: 'update',
+    //   payload: {
+    //     'row': row,
+    //     'column': column,
+    //     'value': elapsedTime
+    //   }
+    // });
   }
 
+  // Creates JSX components based on plant data in gardenPlotsData
   const updateGarden = (gardenPlotsData) => {
-    // console.log("updateGarden called -> setGardenGrid");
-    // Creates components based on plant data in gardenPlotsData
     if (!gardenPlotsData || !gardenPlotsData.length) return("Loading");
 
     let gardenPlots = [];
@@ -148,7 +160,7 @@ const Garden = (props) => {
         {gardenPlots}
       </div>
     );
-  }
+  };
 
   /**
    * Reducer - modifies gardenPlotsData
@@ -156,8 +168,6 @@ const Garden = (props) => {
    * action types:
    * -initialize
    * -update (payload also needs key and value)
-   * -delete
-   * -new    (payload also needs plantId, isWatered)
    * @param {2D array} gardenPlotsData 
    * @param {object}   action 
    */
@@ -209,54 +219,17 @@ const Garden = (props) => {
         gardenPlotsData = gardenArray;
         break;
 
-      case "update":
-        const {value} = action.payload;
-        gardenPlotsData[row][column]["remainingTime"] -= value;
-        updateGarden(gardenPlotsData);
-        break;
-
-      case "delete":
-        gardenPlotsData[row][column] = {
-          isPlant: false,
-          plantId: null,
-          id: `plot${row}-${column}`,
-          remainingTime: null,
-          timeToMature: null,
-          isWatered: false,
-          isHarvested: false
-        };
-        updateGarden(gardenPlotsData);
-        break;
-
-      case "new":
-        const {plantId, isWatered} = action.payload;
-        console.log(`Planting plant with plantID: ${plantId} in plot${row}-${column}`)
-        console.warn("WARNING: watered status set to true on planting. Change for weather effects when implemented")
-        // Fetch plant details from backend.
-        getPlantDetail(plantId)
-        .then(resp=>resp.json(),
-              reason=>console.error(reason))
-        .then(json=>{
-          // Create new plant object and store in correct row, column.
-          gardenPlotsData[Number(row)][Number(column)] = {
-            isPlant: true,
-            plantId: plantId,
-            id: `plot${row}-${column}`,
-            remainingTime: json.time_to_mature,
-            timeToMature: json.time_to_mature,
-            isWatered: true,
-            isHarvested: false
-          }
-          updateGarden(gardenPlotsData);
-        }, reason=>console.error(reason));
-        break;
+      // case "update":
+      //   const {value} = action.payload;
+      //   gardenPlotsData[row][column]["remainingTime"] -= value;
+      //   updateGarden(gardenPlotsData);
+      //   break;
       default:
         console.error("Invalid action type in Garden.reducer.");
     }
-    // console.log(gardenPlotsData);
     return gardenPlotsData;
   }
-  // useReducer(reducer, initialState)
+  
   const [gardenPlotsData, dispatch] = React.useReducer(reducer, [])
 
 
@@ -288,7 +261,7 @@ const Garden = (props) => {
     ()=>updateGarden(gardenPlotsData), [gardenPlotsData, classes]
   );
   
-  console.log("Are we logged in? ", isLoggedIn)
+  //console.log("Are we logged in? ", isLoggedIn)
   return (
     <div className={classes.centered}>
       {gardenGrid}

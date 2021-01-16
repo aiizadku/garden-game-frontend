@@ -8,7 +8,6 @@ import Timer from "../../utils/Timer";
 const useStyles = makeStyles({
   plantContainer: {
     position: "relative",
-    //border: "solid 1px white",
     width: "100%",
     height: "100%"
   },
@@ -48,7 +47,6 @@ const Plant = (props) => {
     e.stopPropagation();
     if (!isMenuOpen) {
       setIsMenuOpen(true);
-      // console.log(`Plant ${props.id} clicked`);
     }
   }
 
@@ -96,7 +94,7 @@ const Plant = (props) => {
           props.id
           ? <img
               id={props.id}
-              src={getPlantDisplay(props.plantId, getGrowthStatus(props.growthPercent))}
+              src={getPlantDisplay(props.plantId, (timerHandle ? getGrowthStatus(timerHandle.status()*100) : getGrowthStatus(0)))}
               alt="Plant"
               className={classes.plant}
             />
@@ -113,7 +111,7 @@ const Plant = (props) => {
             handleHarvest={handleHarvest}
             handleWater={handleWater}
             handleBack={handleBack}
-            growthStatus={getGrowthStatus(props.growthPercent)}
+            growthStatus={getGrowthStatus(timerHandle.status()*100)}
             remainingTime={props.remainingTime}
             isWatered={props.isWatered}
           />

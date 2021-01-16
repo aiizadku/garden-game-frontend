@@ -7,6 +7,16 @@ import getPlantDisplay from "../../images/images";
 import { UserContext } from "../../contexts/UserContext";
 import UserApi from "../../api/UserApi";
 
+/*
+Flow:
+-Menu opens
+-Available plants are pulled from database, filtered by level.
+-Unaffordable plants are greyed out and do nothing on click.
+-Affordable plants are clickable.
+When clicked:
+-handleSelection is called
+*/
+
 const useStyles = makeStyles({
   root: {
     width: 400,
@@ -62,6 +72,7 @@ const PlantList = (props) => {
       getSeeds()
       .then((resp) => resp.json())
       .then((json) => {
+        console.log("Fetched filtered plants in dialog:")
         console.log(json);
         setAllSeeds(json["plants"]);
       });
@@ -78,7 +89,7 @@ const PlantList = (props) => {
           <ListItem
             alignItems="flex-start"
             className={classes.hover}
-            onClick={() => props.handleSelection(plantInfo.id)}
+            onClick={() => props.handleSelection(plantInfo)}
           >
             <ListItemAvatar>
               <Avatar

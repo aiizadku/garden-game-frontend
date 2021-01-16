@@ -3,14 +3,13 @@ import { makeStyles } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Plant from "./Plant";
 import PlantListDialog from "../Dialogs/PlantListDialog";
-import { plantSeed, getPlantDetail } from "../../api/GameApi";
+import { plantSeed } from "../../api/GameApi";
 
 const useStyles = makeStyles({
   plot: {
     position: "relative",
     minHeight: 100,
     minWidth: 100,
-    //border: "solid #7B3503 1px",
   },
   plotContent: {
     alignContent: "center",
@@ -19,47 +18,42 @@ const useStyles = makeStyles({
     left: 0,
     right: 0,
     bottom: 0,
-    //transform: "translate(-50%, -50%)",
   },
 });
 
 /**
- * Expects: handleHarvest, createNewPlant, isPlant, plantId, id, remainingTime, timeToMature, isWatered, isHarvested, updateElapsedGrowTime
+ * GardenPlot contains planted plant or buying menu.
  * @param {object} props 
  */
 const GardenPlot = (props) => {
+  // Variables //////
   const classes = useStyles();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  // Closes seed buying menu when seed is purchased.
-  // Notifies backend via GameApi.plantSeed.
-  // Updates frontend via Garden's createNewPlant
-  const handleSelection = (plantId) => {
-    // Close menu
+  // Button event click handlers //////
+  // Called when a plant is clicked in the buying menu.
+  const handleSelection = (plantInfo) => {
     setIsMenuOpen(false);
     // Construct data to send to backend
-    const rowColData = props.id.slice(4).split("-");
+    const [row, column] = props.id.slice(4).split("-");
     let data = {
-      "row": rowColData[0],
-      "column": rowColData[1],
-      "plantId": plantId
+      "row": row,
+      "column": column,
+      "plantId": plantInfo.id
     };
-    // Attempt to plant seed
+    // Attempt to plant seed in database
     plantSeed(data)
     .then(resp=>{
-      if (resp.ok) { // If ok, plant and subtract money
+      if (resp.ok) {
         // Create new plant on frontend
-        props.createNewPlant(plantId, data.row, data.column);
-        // Pay cost of plant
-        getPlantDetail(plantId)
-        .then(response=>response.json())
-        .then(data=>props.subtractMoney(data.cost));
+        props.createNewPlant(plantInfo, data.row, data.column);
+        // Pay for plant
+        props.subtractMoney(plantInfo.cost);
       }
     });
   };
-
-  // Closes the seed buying menu when back button is pressed.
-  // Passed to PlantListDialog.
+  
+  //Closes plant buying menu.
   const handleBack = () => setIsMenuOpen(false);
 
   return (

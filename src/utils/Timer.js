@@ -1,6 +1,6 @@
 /**
  * Timer class
- * Functions: start, stop, status
+ * Functions: start, stop, status, reset, update
  * Parameters: maxTime, onComplete, (elapsedTime, interval)
  * Times are in ms.
  */
@@ -12,37 +12,43 @@ class Timer {
     this.onUpdate = onUpdate;
     this.interval = interval;
     this.timerHandle = null;
-    this.isDone = false;
+    this.isRunning = false;
   }
-  start= () => {
-    console.log(`Timer started. ${this.remainingTime}ms remain.`);
-    this.timerHandle = setInterval(this.update, this.interval);
-    this.isDone = false;
+  start = () => {
+    if (!this.isRunning) {
+      console.log(`Timer started. ${this.remainingTime}ms remain.`);
+      this.timerHandle = setInterval(this.update, this.interval);
+      this.isRunning = true;
+    }
+    else
+      console.log("Timer already running.");
   }
   stop = () => {
     console.log("Timer stopped.")
     clearInterval(this.timerHandle);
+    this.isRunning = false;
   }
   update = () => {
-    //console.log("Timer updated.")
     // Update elapsed time
     this.remainingTime -= this.interval;
-
     // Perform update action
     this.onUpdate();
-
     // Check to see if timer has reached end
     if (this.remainingTime <= 0) {
       this.stop();
-      this.isDone = true;
       this.onComplete();
     }
   }
+  // Returns alpha of timer (0 to 1)
+  // 0 = just started, 1 = done.
   status = () => {
-    return (this.maxTime - this.remainingTime) / this.maxTime;
+    const alpha = (this.maxTime - this.remainingTime) / this.maxTime;
+    return Math.min(1, alpha);
   }
+  // Stops and resets timer
   reset = () => {
     console.log("Timer reset.")
+    this.stop();
     if (this.timerHandle) {
       clearInterval(this.timerHandle);
     }
