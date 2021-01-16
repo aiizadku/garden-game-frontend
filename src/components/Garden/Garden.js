@@ -78,19 +78,20 @@ const useStyles = makeStyles({
 
 const Garden = (props) => {
   const [amountToAdd, setAmountToAdd] = useState(0)
+  const [xpToAdd, setXpToAdd] = useState(0)
   const handleHarvest = (plantId, id) => {
     getPlantDetail(plantId).then((response)=> response.json()).then((data)=>{
       setAmountToAdd(data.currency)
+      setXpToAdd(data.exp_value)
+      console.log("data to add: ", data)
     })
-    console.log(amountToAdd)
-    props.addMoney(amountToAdd)
+    props.addMoney(amountToAdd, xpToAdd)
     // Remove plant with id from garden
-    console.log(id); // plot#-#, first is row, second is column
-    console.log("REMOVE ME - garden.js - handleHarvest.");
+    // console.log(id); // plot#-#, first is row, second is column
+    // console.log("REMOVE ME - garden.js - handleHarvest.");
   }
 
   const {isLoggedIn, gameState} = useContext(UserContext)
-  console.log("gameState", gameState)
   const userRow = gameState.garden.rows
   const userColumn = gameState.garden.columns
 
@@ -149,7 +150,7 @@ const Garden = (props) => {
   // );
   
   const classes = useStyles();
-  console.log("Are we logged in? ", isLoggedIn)
+
   return (
     <div className={classes.centered}>
       {makeGardenGrid(userRow, userColumn)}

@@ -61,6 +61,17 @@ const addToBalanceByID = (userID, addedAmountObject) => {
   }).then((response) => response.json())
 }
 
+
+// const addToExpByID = (userID, addedAmountObject) => {
+//   return fetch(`http://127.0.0.1:8000/api/profile/${userID}/`, {
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     method: 'PUT',
+//     body: JSON.stringify(addedAmountObject)
+//   }).then((response) => response.json())
+// }
+
 export default {
   registerUser,
   login,
