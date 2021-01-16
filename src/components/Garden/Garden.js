@@ -119,14 +119,6 @@ const Garden = (props) => {
   const updateElapsedGrowTime = (row, column, elapsedTime) => {
     gardenPlotsData[row][column]["remainingTime"] -= elapsedTime;
     updateGarden(gardenPlotsData);
-    // dispatch({
-    //   type: 'update',
-    //   payload: {
-    //     'row': row,
-    //     'column': column,
-    //     'value': elapsedTime
-    //   }
-    // });
   }
 
   // Creates JSX components based on plant data in gardenPlotsData
@@ -218,12 +210,6 @@ const Garden = (props) => {
 
         gardenPlotsData = gardenArray;
         break;
-
-      // case "update":
-      //   const {value} = action.payload;
-      //   gardenPlotsData[row][column]["remainingTime"] -= value;
-      //   updateGarden(gardenPlotsData);
-      //   break;
       default:
         console.error("Invalid action type in Garden.reducer.");
     }
