@@ -1,20 +1,21 @@
 import React, { useContext, useState, useEffect, useForceUpdate } from "react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Button,
-  Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  makeStyles,
-  DialogContent,
-} from "@material-ui/core";
+import { Dialog, DialogTitle, DialogActions } from '@material-ui/core';
+import { List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
+import { Button, Avatar, makeStyles, DialogContent } from "@material-ui/core";
 import { getSeeds } from "../../api/GameApi";
 import getPlantDisplay from "../../images/images";
 import { UserContext } from "../../contexts/UserContext";
+import UserApi from "../../api/UserApi";
+
+/*
+Flow:
+-Menu opens
+-Available plants are pulled from database, filtered by level.
+-Unaffordable plants are greyed out and do nothing on click.
+-Affordable plants are clickable.
+When clicked:
+-handleSelection is called
+*/
 
 const useStyles = makeStyles({
   root: {
@@ -59,47 +60,36 @@ const greyStyles = makeStyles({
  * @param {object} props
  */
 const PlantList = (props) => {
-  const { gameState } = useContext(UserContext);
-  const { current_balance } = gameState.profile;
-  // user.profile.current_balance for the users balance
   const classes = useStyles();
   const grey = greyStyles();
-  //const [styleClass, setStyleClass] = React.useState(classes.content);
   const [allSeeds, setAllSeeds] = React.useState([]);
+  const { gameState } = useContext(UserContext);
+  const [currentBalance, setCurrentBalance] = React.useState(0);
 
-
-  // React.useEffect(
-  //   ()=>{
-  //     (async()=>{
-  //       // Call GameApi to get getSeeds
-  //       // Store plants in plants
-  //       const response = await getSeeds();
-  //       console.log(await response);
-  //       const jsonResponse = await response.json();
-  //       if (await jsonResponse)
-  //         setPlants(await jsonResponse["plants"]);
-  //       else
-  //         console.log("undefined plant response");
-  //     })();
-  //   }, []
-  // );
-  React.useEffect(() => {
-    getSeeds()
+  // Gets list of seeds from backend after initial render
+  React.useEffect(
+    () => {
+      getSeeds()
       .then((resp) => resp.json())
       .then((json) => {
+        console.log("Fetched filtered plants in dialog:")
         console.log(json);
         setAllSeeds(json["plants"]);
       });
-  }, []);
+      UserApi.fetchUserBalanceByID(gameState.user.id)
+      .then(data=>setCurrentBalance(data.current_balance));
+    }, [gameState.user.id]
+  );
+
 
   const makeListItem = (plantInfo) => {
     return (
       <div>
-        {plantInfo.cost <= current_balance ? (
+        {plantInfo.cost <= currentBalance ? (
           <ListItem
             alignItems="flex-start"
             className={classes.hover}
-            onClick={() => props.handleSelection(plantInfo.id)}
+            onClick={() => props.handleSelection(plantInfo)}
           >
             <ListItemAvatar>
               <Avatar
@@ -128,11 +118,6 @@ const PlantList = (props) => {
     );
   };
 
-  // const filteredSeeds = allSeeds.map((seed) => seed.cost > current_balance);
-  // filteredSeeds &&
-
-  // console.log("all seeds", filteredSeeds);
-
   return (
     <Dialog open={props.isMenuOpen}>
       <DialogTitle className={classes.title}>Buy a Plant?</DialogTitle>
@@ -151,5 +136,6 @@ const PlantList = (props) => {
     </Dialog>
   );
 };
+
 
 export default PlantList;

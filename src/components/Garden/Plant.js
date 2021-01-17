@@ -3,11 +3,11 @@ import getPlantDisplay from '../../images/images';
 import gsap from 'gsap';
 import PlantDetailDialog from '../Dialogs/PlantDetailDialog';
 import { makeStyles } from '@material-ui/core';
+import Timer from "../../utils/Timer";
 
 const useStyles = makeStyles({
   plantContainer: {
     position: "relative",
-    //border: "solid 1px white",
     width: "100%",
     height: "100%"
   },
@@ -19,14 +19,16 @@ const useStyles = makeStyles({
   }
 })
 
+
 /**
  * Displays the plant, if planted.
- * Opens seed menu if no plant, and the plot has been clicked.
- * Expects: handleHarvest, id, plantId, growthPercent
+ * Displays plant detail dialog if clicked.
+ * Expects: handleHarvest, id, plantId, growthPercent, updateElapsedGrowTime
  * @param {object} props 
  */
 const Plant = (props) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [timerHandle, setTimerHandle] = React.useState(null);
 
   const getGrowthStatus = (percentGrown) => {
     if (percentGrown >= 100) return "Mature";
@@ -45,9 +47,7 @@ const Plant = (props) => {
     e.stopPropagation();
     if (!isMenuOpen) {
       setIsMenuOpen(true);
-      // console.log(`Plant ${props.id} clicked`);
     }
-    //e.stopPropagation(); // Prevent further click events behind plant.
   }
 
   const handleWater = () => {
@@ -64,6 +64,25 @@ const Plant = (props) => {
     setIsMenuOpen(false);
   }
 
+  // When component first loads, create a timer
+  React.useEffect(
+    ()=> {
+      console.log("Plant loaded. Setting timer handle.")
+      const rowColData = props.id.slice(4).split('-');
+      // const updateElapsedGrowTime = (row, column, elapsedTime)
+      const interval = 100; // 100 ms
+      const updateTime = () => props.updateElapsedGrowTime(rowColData[0], rowColData[1], interval/1000)
+      setTimerHandle(new Timer(props.timeToMature*1000, ()=>{}, updateTime, props.remainingTime*1000, interval));
+    }, []
+  )
+  // When timerHandle is set, possibly start (depends on isWatered)
+  React.useEffect(
+    ()=> {
+      console.log("Checking water to see if timer should start.")
+      if (props.isWatered && timerHandle)
+        timerHandle.start();
+    }, [timerHandle, props.isWatered]
+  );
   React.useEffect(animate, [props.id]);
 
   const classes = useStyles();
@@ -75,7 +94,7 @@ const Plant = (props) => {
           props.id
           ? <img
               id={props.id}
-              src={getPlantDisplay(props.plantId, getGrowthStatus(props.growthPercent))}
+              src={getPlantDisplay(props.plantId, (timerHandle ? getGrowthStatus(timerHandle.status()*100) : getGrowthStatus(0)))}
               alt="Plant"
               className={classes.plant}
             />
@@ -92,7 +111,9 @@ const Plant = (props) => {
             handleHarvest={handleHarvest}
             handleWater={handleWater}
             handleBack={handleBack}
-            growthStatus={getGrowthStatus(props.growthPercent)}
+            growthStatus={getGrowthStatus(timerHandle.status()*100)}
+            remainingTime={props.remainingTime}
+            isWatered={props.isWatered}
           />
         : null
       }

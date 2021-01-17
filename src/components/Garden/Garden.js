@@ -1,47 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
-import { harvestPlant, getPlantDetail } from "../../api/GameApi";
+import { harvestPlant, loadGarden, getPlantDetail } from "../../api/GameApi";
 import { UserContext } from '../../contexts/UserContext'
-import { useContext, useState } from "react";
-import UserApi from '../../api/UserApi';
-import addMoney from '../User Balance/UserBalance';
+import { useContext } from "react";
 
-// [row][col]
-const exampleData = {
-  "plants": [
-    [
-      {id:7, growthPercent: 100},
-      {id:1, growthPercent: 100},
-      {id:2, growthPercent: 100},
-      {id:3, growthPercent: 100},
-      {id:4, growthPercent: 100}
-    ],
-    [
-      {id:0, growthPercent: 20},
-      {id:1, growthPercent: 20},
-      {id:2, growthPercent: 20},
-      {id:3, growthPercent: 20},
-      {id:4, growthPercent: 20}
-    ],
-    [
-      {id:0, growthPercent: 50},
-      {id:1, growthPercent: 50},
-      {id:2, growthPercent: 50},
-      {id:3, growthPercent: 50},
-      {id:4, growthPercent: 50}
-    ],
-    [
-      {id:0, growthPercent: 100},
-      {id:1, growthPercent: 100},
-      {id:2, growthPercent: 100},
-      {id:3, growthPercent: 100},
-      {id:4, growthPercent: 100}
-    ]
-  ]
-};
-
-
+// CSS styles //////
 const useStyles = makeStyles({
   flexContainer: {
     display: "inline-flex",
@@ -64,7 +28,7 @@ const useStyles = makeStyles({
     width: 100,
     height: 100,
     position: 'relative',
-    border: "2px solid white"
+    border: "2px solid #7B3503"
   },
   centered: {
     position: "absolute",
@@ -75,89 +39,220 @@ const useStyles = makeStyles({
 });
 
 
-
+/**
+ * Garden component contains GardenPlot components.
+ * Major game functionality is controlled here.
+ * @param {object} props 
+ */
 const Garden = (props) => {
-  const [amountToAdd, setAmountToAdd] = useState(0)
+  // Variables //////
+  const {isLoggedIn, gameState} = useContext(UserContext)
+  const userRow = gameState.garden.rows;
+  const userColumn = gameState.garden.columns;
+  const [GardenjsonObject, setGardenJsonObject] = React.useState({});
+  const [gardenGrid, setGardenGrid] = React.useState([]);
+  const classes = useStyles();
+
+  /**
+   * Deletes plant from database.
+   * Adds money and exp to player profile.
+   * If the plant is unable to be deleted, the frontend does nothing.
+   * @param {number} plantId 
+   * @param {string} id (`plot${row}-${column}`)
+   */
   const handleHarvest = (plantId, id) => {
-    getPlantDetail(plantId).then((response)=> response.json()).then((data)=>{
-      setAmountToAdd(data.currency)
-    })
-    console.log(amountToAdd)
-    props.addMoney(amountToAdd)
-    // Remove plant with id from garden
-    console.log(id); // plot#-#, first is row, second is column
-    console.log("REMOVE ME - garden.js - handleHarvest.");
+    console.log(`Harvesting ${id}.`);
+    const [row, column] = id.slice(4).split('-');
+    // backend harvest
+    harvestPlant(plantId, row, column)
+    .then(resp=> {
+      if (resp.ok) {
+        // Frontend harvest
+        gardenPlotsData[row][column] = {
+          isPlant: false,
+          plantId: null,
+          id: `plot${row}-${column}`,
+          remainingTime: null,
+          timeToMature: null,
+          isWatered: false,
+          isHarvested: false
+        };
+        updateGarden(gardenPlotsData);
+      }
+    });
+    getPlantDetail(plantId)
+    .then(response=>response.json())
+    .then(data=>props.addMoney(data.currency));
+  };
+
+  /**
+   * Creates a new plant on the frontend.
+   * Called from GardenPlot, which handles the backend.
+   * Will not be called if the backend cannot create a plant.
+   * @param {object} plantInfo
+   * @param {number} row
+   * @param {number} column
+   */
+  const createNewPlant = (plantInfo, row, column) => {
+    console.log(`Planting plant with plantID: ${plantInfo.id} in plot${row}-${column}`);
+    console.warn("WARNING: watered status set to true on planting. Change for weather effects when implemented");
+    // Fetch plant details from backend.
+    // Create new plant object and store in correct row, column.
+    gardenPlotsData[Number(row)][Number(column)] = {
+      isPlant: true,
+      plantId: plantInfo.id,
+      id: `plot${row}-${column}`,
+      remainingTime: plantInfo.time_to_mature,
+      timeToMature: plantInfo.time_to_mature,
+      isWatered: true,
+      isHarvested: false
+    }
+    updateGarden(gardenPlotsData);
+  };
+
+  /**
+   * Updates grow time
+   * @param {number} row 
+   * @param {number} column 
+   * @param {number} elapsedTime
+   */
+  const updateElapsedGrowTime = (row, column, elapsedTime) => {
+    gardenPlotsData[row][column]["remainingTime"] -= elapsedTime;
+    updateGarden(gardenPlotsData);
   }
 
-  const {isLoggedIn, gameState} = useContext(UserContext)
-  console.log("gameState", gameState)
-  const userRow = gameState.garden.rows
-  const userColumn = gameState.garden.columns
+  // Creates JSX components based on plant data in gardenPlotsData
+  const updateGarden = (gardenPlotsData) => {
+    if (!gardenPlotsData || !gardenPlotsData.length) return("Loading");
 
-  const makeGardenGrid = (rows, cols) => {
     let gardenPlots = [];
-    for (let r = 0; r < rows; r++) {
+    for (let r = 0; r < gardenPlotsData.length; r++) {
       let gardenRow = [];
-      for (let c = 0; c < cols; c++) {
+      for (let c = 0; c < gardenPlotsData[r].length; c++) {
         gardenRow.push(
           <div className={classes.flexPlot}>
             <GardenPlot
-              plantId={exampleData["plants"][r][c]["id"]}
-              id={`plot${r}-${c}`}
-              isPlant={true}
-              growthPercent={exampleData["plants"][r][c]["growthPercent"]}
               handleHarvest={handleHarvest}
+              createNewPlant={createNewPlant}
+              updateElapsedGrowTime={updateElapsedGrowTime}
+              {...gardenPlotsData[r][c]}
               subtractMoney={props.subtractMoney}
               />
           </div>
         );
       }
-      // Add empty row just for demo purposes
-      gardenRow.push(
-        <div className={classes.flexPlot}>
-            <GardenPlot
-              plantId={null}
-              id={`plot${r}-${cols}`}
-              isPlant={false}
-              growthPercent={null}
-              handleHarvest={handleHarvest}
-              subtractMoney={props.subtractMoney}
-              />
-          </div>
-      )
       gardenPlots.push(
         <div className={classes.flexRow}>
           {gardenRow}
         </div>
       );
     }
-    return (
+    setGardenGrid(
       <div className={classes.flexContainer}>
         {gardenPlots}
       </div>
     );
-  }
+  };
 
-  // const [allSeeds, setAllSeeds] = React.useState([]);
+  /**
+   * Reducer - modifies gardenPlotsData
+   * Payload needs at least row, column
+   * action types:
+   * -initialize
+   * -update (payload also needs key and value)
+   * @param {2D array} gardenPlotsData 
+   * @param {object}   action 
+   */
+  const reducer = (gardenPlotsData, action) => {
+    const {row, column} = action.payload;
+    switch(action.type) {
+      case "initialize":
+        // Create empty 2d array of row x column size
+        let gardenArray = [];
+        for (let r=0; r<row; r++) {
+          let gardenRow = [];
+          for(let c=0; c<column; c++) {
+            gardenRow.push(
+              {
+                isPlant: false,
+                plantId: null,
+                id: `plot${r}-${c}`,
+                remainingTime: null,
+                timeToMature: null,
+                isWatered: false,
+                isHarvested: false
+              }
+            );
+          }
+          gardenArray.push(gardenRow);
+        }
+
+        if (!Object.keys(GardenjsonObject).length) {
+          console.log("Empty json object")
+          return [];
+        }
+
+        // Fill in loaded plants
+        console.log("Checking for loaded plants.")
+        console.log(`Found ${GardenjsonObject["plants"].length} loaded plants`)
+        for (let plant of GardenjsonObject["plants"]) {
+          console.log(plant)
+          gardenArray[plant.row_num][plant.column_num] = {
+            isPlant: true,
+            plantId: plant.plant_id,
+            id: `plot${plant.row_num}-${plant.column_num}`,
+            remainingTime: plant.remaining_time,
+            timeToMature: plant.time_to_mature,
+            isWatered: plant.watered,
+            isHarvested: plant.harvested
+          }
+        }
+
+        gardenPlotsData = gardenArray;
+        break;
+      default:
+        console.error("Invalid action type in Garden.reducer.");
+    }
+    return gardenPlotsData;
+  }
   
-  // React.useEffect(
-  //   ()=>{
-  //     getSeeds()
-  //     .then(resp=>resp.json())
-  //     .then(json=>setAllSeeds(json["plants"]));
-  //   }, []
-  // );
+  const [gardenPlotsData, dispatch] = React.useReducer(reducer, [])
+
+
+  // Load garden data on component mount
+  React.useEffect(
+    ()=>{
+      loadGarden()
+      .then(resp=>resp.json())
+      .then(json=>setGardenJsonObject(json));
+    }, []
+  );
+  // Called when GardenjsonObject updates, or garden size changes.
+  React.useEffect(
+    ()=>{
+      // Prevent operations if garden hasn't been loaded yet
+      if (!userRow || !userColumn) return;
+      // Initialize empty garden
+      dispatch({
+        type: "initialize",
+        payload: {
+          'row': userRow,
+          'column': userColumn
+        }
+      })
+    }, [GardenjsonObject, userRow, userColumn]
+  );
+  //Update gardenGrid when gardenPlotsData is updated
+  React.useEffect(
+    ()=>updateGarden(gardenPlotsData), [gardenPlotsData, classes]
+  );
   
-  const classes = useStyles();
-  console.log("Are we logged in? ", isLoggedIn)
+  //console.log("Are we logged in? ", isLoggedIn)
   return (
     <div className={classes.centered}>
-      {makeGardenGrid(userRow, userColumn)}
+      {gardenGrid}
     </div>
   );
-
-
-  
 }
 
 export default Garden;

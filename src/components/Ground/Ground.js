@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core";
 import { useContext, useState, useEffect } from "react";
 import {UserContext} from '../../contexts/UserContext'
 import UserApi from '../../api/UserApi';
+
 const useStyles = makeStyles({
   ground: {
     height: '70vh',
@@ -10,17 +11,16 @@ const useStyles = makeStyles({
     backgroundColor: "darkgreen"
   }
 });
+
 /**
  * Bottom 70% of screen.
  * Places garden in center of ground.
  * @param {object} props 
  */
 const Ground = props => {
-  const { gameState } = useContext(UserContext)
-
   const classes = useStyles();
+  const { gameState } = useContext(UserContext)
   const [currentBalance, setCurrentBalance] = useState(0)
-  // const {id} = user
 
   useEffect(() => {
     const { id } = gameState.user
@@ -33,27 +33,48 @@ const Ground = props => {
 
   const addMoney = (plantValue) => {
     const { id } = gameState.user
-    const addedAmountObject = {
-      user: id,
-      current_balance: currentBalance + plantValue
-    }
-    console.log('adding money')
-    UserApi.addToBalanceByID(id, addedAmountObject).then((data) => {
-      setCurrentBalance(data.current_balance)
+    // Fetch current_balance
+    UserApi.fetchUserBalanceByID(id)
+    .then((data) => {
+      // Then add and set new balance
+      const addedAmountObject = {
+        user: id,
+        current_balance: data.current_balance + plantValue
       }
-    ) 
+      console.log(
+      `Adding money.
+      Previous Balance  : $${data.current_balance}
+      Amount to add     : $${plantValue}
+      New Total Balance : $${addedAmountObject.current_balance}`);
+
+      UserApi.addToBalanceByID(id, addedAmountObject).then((data) => {
+        setCurrentBalance(data.current_balance)
+        }
+      )
+    });
   }
+
   const subtractMoney = (plantValue) => {
     const { id } = gameState.user
-    const subtractedAmountObject = {
-      user: id,
-      current_balance: currentBalance - plantValue
-    }
-    console.log('subtracting money')
-    UserApi.addToBalanceByID(id, subtractedAmountObject).then((data) => {
-      setCurrentBalance(data.current_balance)
+    // Fetch current_balance
+    UserApi.fetchUserBalanceByID(id)
+    .then((data) => {
+      // Then subtract and set new balance
+      const addedAmountObject = {
+        user: id,
+        current_balance: data.current_balance - plantValue
       }
-    ) 
+      console.log(
+      `Subtracting money.
+      Previous Balance  : $${data.current_balance}
+      Amount to Subtract: $${plantValue}
+      New Total Balance : $${addedAmountObject.current_balance}`);
+
+      UserApi.addToBalanceByID(id, addedAmountObject).then((data) => {
+        setCurrentBalance(data.current_balance)
+        }
+      )
+    });
   }
 
   return (
@@ -67,4 +88,5 @@ const Ground = props => {
     </div>
   )
 };
+
 export default Ground;
