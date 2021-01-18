@@ -5,12 +5,9 @@ import "./LoginPage.css";
 import { TextField, Typography, Button, Grid } from "@material-ui/core";
 import Register from "../components/Register";
 import UserAPI from "../api/UserApi";
-import getWeather from "../api/WeatherApi";
 import { Redirect } from "react-router";
-import getIP from "../api/LocationApi";
 
 const LoginPage = (props) => {
-  const [weather, setWeather] = useState("");
   const [error, setError] = useState({'error': false, 'message': null})
   const { setLoggedIn, gameState, setGameData } = useContext(UserContext)
   

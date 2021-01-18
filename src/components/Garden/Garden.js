@@ -196,7 +196,7 @@ const Garden = (props) => {
         }
 
         if (!Object.keys(GardenjsonObject).length) {
-          console.log("Empty json object")
+          // console.log("Empty json object")
           return [];
         }
 

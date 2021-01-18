@@ -42,10 +42,11 @@ const Ground = props => {
 
     const { id } = gameState.user
 
-    if (currentXp % 40 === 0 & currentXp != 0){
+    if (currentXp % 40 === 0 & currentXp !== 0){
 
       const levelObject = {
         user: id,
+        // currentLevel / 40
         current_level: currentLevel + 1
       }
       UserApi.addToBalanceByID(id, levelObject)
