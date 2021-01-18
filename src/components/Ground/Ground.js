@@ -65,13 +65,16 @@ const Ground = props => {
       const addedAmountObject = {
         user: id,
         current_balance: data.current_balance + plantValue,
-        xp: currentXp + xpValue,
+        xp: data.xp + xpValue,
       }
       console.log(
-      `Adding money.
-      Previous Balance  : $${data.current_balance}
-      Amount to add     : $${plantValue}
-      New Total Balance : $${addedAmountObject.current_balance}`);
+        `Adding money and xp.
+        Previous Balance  : $${data.current_balance}
+        Amount to add     : $${plantValue}
+        New Total Balance : $${addedAmountObject.current_balance}
+        Previous xp   : ${data.xp}
+        Amount to add : ${xpValue}
+        New Total XP  : ${addedAmountObject.xp}`);
 
       UserApi.addToBalanceByID(id, addedAmountObject).then((data) => {
         setCurrentBalance(data.current_balance)
