@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
 import { harvestPlant, loadGarden, getPlantDetail } from "../../api/GameApi";
@@ -195,7 +195,7 @@ const Garden = (props) => {
         }
 
         if (!Object.keys(GardenjsonObject).length) {
-          console.log("Empty json object")
+          // console.log("Empty json object")
           return [];
         }
 
