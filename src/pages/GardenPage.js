@@ -5,6 +5,7 @@ import TestButton from "../components/TestButton/TestButton";
 import getLocation from "../api/LocationApi";
 import React, { useEffect, useState } from "react";
 import getIP from "../api/LocationApi";
+import SoundControls from "../components/Sound/SoundControls";
 
 const useStyles = makeStyles({
   container: {
@@ -28,6 +29,7 @@ const GardenPage = (props) => {
       <Sky />
       {/*<TestButton />*/ null}
       <Ground />
+      <SoundControls />
     </div>
   );
 };
