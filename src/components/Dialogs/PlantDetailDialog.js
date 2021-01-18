@@ -24,6 +24,8 @@ const PlantDetailDialog = props => {
     }, []
   );
 
+  React.useEffect(()=>{}, [props.waterPercent]);
+
   // Liquid gauge variables
   const radius = 50;
   //const interpolate = interpolateRgb('#6495ed', '#dc143c');
@@ -83,7 +85,7 @@ const PlantDetailDialog = props => {
                     style={{ margin: '0 auto' }}
                     width={radius * 2}
                     height={radius * 2}
-                    value={80}
+                    value={props.waterPercent}
                     percent="%"
                     textSize={1}
                     textOffsetX={0}
@@ -139,7 +141,7 @@ const PlantDetailDialog = props => {
             ? <Button variant="contained" onClick={(e)=>{e.stopPropagation(); props.handleHarvest()}} color="secondary">
                 Harvest
               </Button>
-            : <Button variant="contained" onClick={(e)=>{e.stopPropagation()}} color="primary">
+            : <Button variant="contained" onClick={(e)=>{e.stopPropagation(); props.handleWater()}} color="primary">
                 Water
               </Button>
           }

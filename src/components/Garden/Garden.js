@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
 import { harvestPlant, loadGarden, getPlantDetail } from "../../api/GameApi";
 import { UserContext } from '../../contexts/UserContext'
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 // CSS styles //////
 const useStyles = makeStyles({
@@ -102,7 +102,8 @@ const Garden = (props) => {
    */
   const createNewPlant = (plantInfo, row, column) => {
     console.log(`Planting plant with plantID: ${plantInfo.id} in plot${row}-${column}`);
-    console.warn("WARNING: watered status set to true on planting. Change for weather effects when implemented");
+    // console.warn("WARNING: watered status set to true on planting. Change for weather effects when implemented");
+    // Water controls handled inside Plant.js
     // Fetch plant details from backend.
     // Create new plant object and store in correct row, column.
     gardenPlotsData[Number(row)][Number(column)] = {
