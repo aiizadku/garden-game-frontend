@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, makeStyles, TableContainer } from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
 import BackgroundMusicLoop from "./SoundFiles/BackgroundMusicLoop.wav";
 import { Slider } from "@material-ui/core";
 import VolumeDownIcon from '@material-ui/icons/VolumeDown';

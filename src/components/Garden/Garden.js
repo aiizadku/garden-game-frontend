@@ -53,8 +53,8 @@ const Garden = (props) => {
   const [GardenjsonObject, setGardenJsonObject] = React.useState({});
   const [gardenGrid, setGardenGrid] = React.useState([]);
   const classes = useStyles();
-  const [amountToAdd, setAmountToAdd] = useState(0)
-  const [xpToAdd, setXpToAdd] = useState(0)
+  const [amountToAdd, setAmountToAdd] = React.useState(0);
+  const [xpToAdd, setXpToAdd] = React.useState(0);
 
   /**
    * Deletes plant from database.
