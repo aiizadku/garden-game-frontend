@@ -45,6 +45,7 @@ const useStyles = makeStyles({
  * @param {object} props 
  */
 const Garden = (props) => {
+
   // Variables //////
   const {isLoggedIn, gameState} = useContext(UserContext)
   const userRow = gameState.garden.rows;
@@ -52,6 +53,8 @@ const Garden = (props) => {
   const [GardenjsonObject, setGardenJsonObject] = React.useState({});
   const [gardenGrid, setGardenGrid] = React.useState([]);
   const classes = useStyles();
+  const [amountToAdd, setAmountToAdd] = useState(0)
+  const [xpToAdd, setXpToAdd] = useState(0)
 
   /**
    * Deletes plant from database.
@@ -82,7 +85,11 @@ const Garden = (props) => {
     });
     getPlantDetail(plantId)
     .then(response=>response.json())
-    .then(data=>props.addMoney(data.currency));
+    .then(data=> {
+      setAmountToAdd(data.currency)
+      setXpToAdd(data.exp_value)
+      props.addMoney(data.currency, data.exp_value)
+    });
   };
 
   /**
@@ -247,7 +254,7 @@ const Garden = (props) => {
     ()=>updateGarden(gardenPlotsData), [gardenPlotsData, classes]
   );
   
-  //console.log("Are we logged in? ", isLoggedIn)
+
   return (
     <div className={classes.centered}>
       {gardenGrid}
