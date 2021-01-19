@@ -96,20 +96,25 @@ const Plant = (props) => {
     setIsMenuOpen(false);
   }
 
+
+  // Force update for timer in dialog
+  const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+
+
   // useEffects //////
   // When component first loads, create a timer
   React.useEffect(
 
     ()=> {
       console.log("useEffect: Creating grow timer and water timer.")
-      const rowColData = props.id.slice(4).split('-');
+      //const rowColData = props.id.slice(4).split('-');
       const interval = 100; // 0.1s update interval
-      const updateTime = () => props.updateElapsedGrowTime(rowColData[0], rowColData[1], interval/1000);
+      //const updateTime = () => props.updateElapsedGrowTime(rowColData[0], rowColData[1], interval/1000);
       setTimerHandle(
         new Timer(
           props.timeToMature*1000,
           ()=>{playSound(PopClip)},
-          updateTime,
+          ()=>{},// updateTime,
           props.remainingTime*1000,
           interval
         )
@@ -123,7 +128,7 @@ const Plant = (props) => {
           ()=>{ // onComplete
             setIsWatered(false);
           },
-          ()=>{}, // onUpdate
+          forceUpdate, // onUpdate
           waterTimeRemaining,
           interval // 0.1s update interval
         )
@@ -182,7 +187,8 @@ const Plant = (props) => {
             handleWater={handleWater}
             handleBack={handleBack}
             growthStatus={getGrowthStatus(timerHandle.status()*100)}
-            remainingTime={props.remainingTime}
+            // remainingTime={props.remainingTime}
+            remainingTime={Math.ceil(timerHandle.remainingTime/1000)}
             isWatered={props.isWatered}
             waterPercent={(1-waterTimerHandle.status())*100}
           />
