@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core';
 import GardenPlot from './GardenPlot';
 import { harvestPlant, loadGarden, getPlantDetail } from "../../api/GameApi";
 import { UserContext } from '../../contexts/UserContext'
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 // CSS styles //////
 const useStyles = makeStyles({

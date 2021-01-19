@@ -1,6 +1,16 @@
+.root {
+  backgroundImage: url('https://thumbs.dreamstime.com/b/autumn-thanksgiving-background-pumpkins-maple-leaves-turquoise-table-above-autumn-thanksgiving-background-pumpkins-160472384.jpg');
+  backgroundPosition: center;
+  backgroundSize: cover;
+  backgroundRepeat: no-repeat;
+  width: 100vw;
+  height:100vh
+
+}
 .container {
   position: absolute;
   top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
