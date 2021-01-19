@@ -4,6 +4,8 @@ import Box from "@material-ui/core/Box";
 import Plant from "./Plant";
 import PlantListDialog from "../Dialogs/PlantListDialog";
 import { plantSeed } from "../../api/GameApi";
+import { SfxPlayerContext } from '../../pages/GardenPage';
+import ShovelClip from "../Sound/SoundFiles/ShovelClip.wav";
 
 const useStyles = makeStyles({
   plot: {
@@ -29,6 +31,7 @@ const GardenPlot = (props) => {
   // Variables //////
   const classes = useStyles();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const sfxPlayer = React.useContext(SfxPlayerContext);
 
   // Button event click handlers //////
   // Called when a plant is clicked in the buying menu.
@@ -49,6 +52,15 @@ const GardenPlot = (props) => {
         props.createNewPlant(plantInfo, data.row, data.column);
         // Pay for plant
         props.subtractMoney(plantInfo.cost);
+        // Play planting sound
+        console.log("sfxPlayer: ")
+        console.log(sfxPlayer);
+        if (!sfxPlayer.isSfxMuted) {
+          sfxPlayer.audioHandle.pause();
+          sfxPlayer.audioHandle.src = ShovelClip;
+          sfxPlayer.audioHandle.load();
+          sfxPlayer.audioHandle.play();
+        }
       }
     });
   };
