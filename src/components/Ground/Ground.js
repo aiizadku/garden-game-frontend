@@ -110,14 +110,19 @@ const Ground = props => {
 
   return (
     <div className={classes.ground}>
-      User Balance: { currentBalance }
+      {/* User Balance: { currentBalance }
         User XP: { currentXp }
-        User Level: { currentLevel }
+        User Level: { currentLevel } */}
       <Garden 
       addMoney={addMoney}
       subtractMoney={subtractMoney}
       />
-      <PlayerInfoBox />
+      <PlayerInfoBox
+        username={gameState.user.username}
+        currentBalance={currentBalance}
+        currentXp={currentXp}
+        currentLevel={currentLevel}
+      />
     </div>
   )
 };

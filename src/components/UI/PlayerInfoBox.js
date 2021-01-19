@@ -6,16 +6,16 @@ const useStyles = makeStyles({
   root: {
     display: "grid",
     gridTemplateColumns: "75px 75px",
-    gridTemplateRows: "30px 25px 25px 25px",
+    gridTemplateRows: "40px 25px 25px 25px",
     position: "absolute",
     bottom: 0,
     left: 0,
     width: 150,
-    height: 200,
+    height: 120,
     borderRadius: "4px",
     border: "4px solid #7B3503",
     backgroundColor: 'tan',
-    borderTopRightRadius: 14,
+    borderTopRightRadius: 8,
   },
   leftColumn: {
     marginLeft: "15px"
@@ -27,6 +27,7 @@ const useStyles = makeStyles({
 
 const PlayerInfoBox = props => {
   const classes = useStyles();
+
   return(
     <Box className={classes.root}>
       <Box style={{
@@ -35,9 +36,10 @@ const PlayerInfoBox = props => {
         backgroundColor: "saddlebrown",
         borderBottom: "4px solid #7B3503",
         fontSize: 20,
-        borderTopRightRadius: 8,
+        borderTopRightRadius: 2,
+        marginBottom: 6
       }}>
-        NAME
+        {props.username}
       </Box>
 
       {/* Level Row */}
@@ -52,7 +54,7 @@ const PlayerInfoBox = props => {
           gridColumn: "2 / 3"
         }}
         className={classes.rightColumn}
-      >100</Box>
+      >{props.currentLevel}</Box>
 
       {/* XP Row */}
       <Box style={{
@@ -66,7 +68,7 @@ const PlayerInfoBox = props => {
           gridColumn: "2 / 3"
         }}
         className={classes.rightColumn}
-      >25000</Box>
+      >{props.currentXp}</Box>
 
       {/* Money Row */}
       <Box style={{
@@ -80,7 +82,7 @@ const PlayerInfoBox = props => {
           gridColumn: "2 / 3"
         }}
         className={classes.rightColumn}
-      >25000</Box>
+      >{props.currentBalance}</Box>
     </Box>
   );
 };
