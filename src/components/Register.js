@@ -10,10 +10,24 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import Alert from "./alerts/DefaultAlert";
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    backgroundColor: "#944e6c",
+  },
+  button2: {
+    backgroundColor: "#e9b0df",
+  },
+  dialog: {
+    backgroundColor: "#c6ebc9"
+  }
+}))
 
 const Register = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState({ error: false, message: "" });
+  const classes = useStyles();
   
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,7 +60,7 @@ const Register = () => {
 
   return (
     <div>
-      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
+      <Button variant="contained" className={classes.button} onClick={handleClickOpen}>
         Register
       </Button>
 
@@ -55,16 +69,15 @@ const Register = () => {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Register</DialogTitle>
+        <DialogTitle className={classes.dialog}id="form-dialog-title">Register</DialogTitle>
 
-        <DialogContent>
+        <DialogContent className={classes.dialog}>
           <DialogContentText>
-            To register to this website, please enter your username, password,
-            city, and state here.
+            To register and make your own garden, please register your username and password here.
           </DialogContentText>
           {/* FORM */}
 
-          <form onSubmit={handleRegister} id="myform">
+          <form  onSubmit={handleRegister} id="myform">
             {error["error"] && (
               <div>
                 <Alert type="error" label="Error" message={error.message} />
@@ -86,11 +99,11 @@ const Register = () => {
             />
           </form>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
+        <DialogActions className={classes.dialog}>
+          <Button onClick={handleClose} className={classes.button}>
             Cancel
           </Button>
-          <Button type="submit" form="myform" color="primary">
+          <Button type="submit" form="myform" className={classes.button2}>
             Register
           </Button>
         </DialogActions>

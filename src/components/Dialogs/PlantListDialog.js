@@ -98,7 +98,7 @@ const PlantList = (props) => {
               />
             </ListItemAvatar>
             <ListItemText>
-              {`ID: ${plantInfo.id}, flower_name: ${plantInfo.flower_name}, cost: ${plantInfo.cost}, time to mature: ${plantInfo.time_to_mature}, exp value: ${plantInfo.exp_value}`}
+              {`${plantInfo.flower_name} | Cost: ${plantInfo.cost}, Time to Mature: ${plantInfo.time_to_mature}, Exp Value: ${plantInfo.exp_value}`}
             </ListItemText>
           </ListItem>
         ) : (
@@ -110,7 +110,7 @@ const PlantList = (props) => {
               />
             </ListItemAvatar>
             <ListItemText>
-              {`ID: ${plantInfo.id}, flower_name: ${plantInfo.flower_name}, cost: ${plantInfo.cost}, time to mature: ${plantInfo.time_to_mature}, exp value: ${plantInfo.exp_value}`}
+              {`${plantInfo.flower_name} | Cost: ${plantInfo.cost}, Time to Mature: ${plantInfo.time_to_mature}, Exp Value: ${plantInfo.exp_value}`}
             </ListItemText>
           </ListItem>
         )}

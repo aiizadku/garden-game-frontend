@@ -58,6 +58,7 @@ class App extends Component {
           <BrowserRouter>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/login" component={LoginPage} />
+            
             <Route exact path="/garden" component={GardenPage} />
           </BrowserRouter>
         </UserContext.Provider>
