@@ -37,10 +37,11 @@ const GardenPage = (props) => {
       setWeather(data);
     });
   }, [city]);
-  console.log('my location: ',city, userState);
+
+  // console.log('my location: ',city, userState);
 
   // useEffect(() => {
-  //   setWeather("tornado");
+  //   setWeather("Snow");
   // },[]);
 
   

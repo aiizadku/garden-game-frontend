@@ -3,8 +3,8 @@ import UserBalance from "../User Balance/UserBalance";
 import { UserContext } from "../../contexts/UserContext";
 import { useContext } from "react";
 import LeaderBoard from "../LeaderBoard/LeaderBoard";
- 
-
+import darkCloud from "../../images/clouds/darkCloud.png";
+import lightCLoud from "../../images/clouds/lightCloud.png";
 const useStyles = makeStyles({
   Clear: {
     backgroundColor: "lightblue",
@@ -15,9 +15,12 @@ const useStyles = makeStyles({
     top: 0,
     left: 0,
     margin: 0,
+    backgroundImage: "url(" + lightCLoud + "), url(" + lightCLoud + "), url(" + lightCLoud + ")",
+    backgroundPosition: "20px 15px, 600px, 1500px ",
+    backgroundRepeat: "no-repeat",
   },
   Rain: {
-    backgroundColor: "blue",
+    backgroundColor: "lightblue",
     minHeight: "20%",
     width: "100%",
     height: "30vh",
@@ -25,9 +28,12 @@ const useStyles = makeStyles({
     top: 0,
     left: 0,
     margin: 0,
+    backgroundImage: "url(" + darkCloud + ")",
+    backgroundPosition: "20px 15px",
+    backgroundRepeat: "repeat-x",
   },
   Cloud: {
-    backgroundColor: "cyan",
+    backgroundColor: "lightblue",
     minHeight: "20%",
     width: "100%",
     height: "30vh",
@@ -35,9 +41,12 @@ const useStyles = makeStyles({
     top: 0,
     left: 0,
     margin: 0,
+    backgroundImage: "url(" + lightCLoud + ")",
+    backgroundPosition: "20px 15px",
+    backgroundRepeat: "repeat-x",
   },
   Snow: {
-    backgroundColor: "snow",
+    backgroundColor: "lightblue",
     minHeight: "20%",
     width: "100%",
     height: "30vh",
@@ -45,9 +54,9 @@ const useStyles = makeStyles({
     top: 0,
     left: 0,
     margin: 0,
-    backgroundImage: `url(${"https://thumbs.gfycat.com/AngryPoorAmericanbobtail-max-1mb.gif"})`,
-    backgroundSize : 'cover',
-    backgroundRepeat: 'no-repeat'
+    backgroundImage: "url(" + darkCloud + ")",
+    backgroundPosition: "20px 15px",
+    backgroundRepeat: "repeat-x",
   },
 });
 
@@ -57,13 +66,11 @@ const useStyles = makeStyles({
  * @param {object} props
  */
 
-
 const Sky = (props) => {
   const { user } = useContext(UserContext);
   const classes = useStyles();
 
-  
-  console.log(props.weather)
+  // console.log(props.weather)
   return (
     // <div className={classes[props.weather]}>
     <div
@@ -73,8 +80,9 @@ const Sky = (props) => {
           : classes[props.weather] || classes.Clear
       }
     >
-      {/* <LeaderBoard/> */}
-      
+
+      <LeaderBoard />
+
     </div>
   );
 };
