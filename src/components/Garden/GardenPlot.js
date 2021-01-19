@@ -56,6 +56,7 @@ const GardenPlot = (props) => {
         console.log("sfxPlayer: ")
         console.log(sfxPlayer);
         if (!sfxPlayer.isSfxMuted) {
+          sfxPlayer.audioHandle.pause();
           sfxPlayer.audioHandle.src = ShovelClip;
           sfxPlayer.audioHandle.load();
           sfxPlayer.audioHandle.play();

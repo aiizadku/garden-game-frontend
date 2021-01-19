@@ -1,10 +1,11 @@
 const getIP = async () => {
   let response = await fetch(
-    "https://geo.ipify.org/api/v1?apiKey=at_BxGYkD7fZRmbz2fjXxWOANPg5wyeG"
+    "https://geo.ipify.org/api/v1?apiKey=at_NUF1OP62ImD5gECto44MwWTeLMt2R"
   );
   let data = await response.json();
-  console.log("from getIP", data);
-  return data;
+  let location = await data.location
+  // console.log("from getIP", location);
+  return location;
 };
 
 export default getIP;

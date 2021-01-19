@@ -2,11 +2,11 @@ import Sky from "../components/Sky/Sky";
 import Ground from "../components/Ground/Ground";
 import { makeStyles } from "@material-ui/core";
 import TestButton from "../components/TestButton/TestButton";
-import getLocation from "../api/LocationApi";
 import React, { useEffect, useState } from "react";
 import getIP from "../api/LocationApi";
 import SoundControls from "../components/Sound/SoundControls";
 import CoinClip from "../components/Sound/SoundFiles/CoinClip.wav";
+import getWeather from "../api/WeatherApi";
 
 const useStyles = makeStyles({
   container: {
@@ -19,17 +19,33 @@ const useStyles = makeStyles({
 export const SfxPlayerContext = React.createContext();
 
 const GardenPage = (props) => {
-  // const [userState, setUserState] = useState("");
-  // const [city, setCity] = useState("");
-  // const [error, setError] = useState({ error: false, message: null });
+  const [userState, setUserState] = useState("");
+  const [city, setCity] = useState("");
+  const [weather, setWeather] = useState("");
+  const [error, setError] = useState({ error: false, message: null });
+
+  useEffect(() => {
+    getIP().then((json) => {
+      setUserState(json.region);
+      setCity(json.city);
+    });
+  }, []);
+
+  useEffect(() => {
+    getWeather(city, userState).then((data) => {
+      // console.log(data)
+      setWeather(data);
+    });
+  }, [city]);
+  console.log('my location: ',city, userState);
 
   // useEffect(() => {
-  //   getIP();
-  // });
+  //   setWeather("tornado");
+  // },[]);
 
   
   // SFX Context /////
-  const [sfxVolume, setSfxVolume] = React.useState(100);
+  const [sfxVolume, setSfxVolume] = React.useState(50);
   const [isSfxMuted, setIsSfxMuted] = React.useState(false);
   const audio = new Audio(CoinClip);
   audio.volume   = sfxVolume/100;
@@ -58,7 +74,7 @@ const GardenPage = (props) => {
   return (
     <div className={classes.container}>
       <SfxPlayerContext.Provider value={providerObj}>
-        <Sky />
+        <Sky weather={weather} />
         {/* <TestButton /> */}
         <Ground />
         <SoundControls />
@@ -66,6 +82,5 @@ const GardenPage = (props) => {
     </div>
   );
 };
-
 
 export default GardenPage;
