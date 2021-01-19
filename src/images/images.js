@@ -1,31 +1,42 @@
 import Mound from "./Mound.png"
 import Seedling from "./Seedling.png";
+import TutorialFlowerNO from "./TutorialFlowerNO.png";
 
 import TutorialFlowerGrowing from "./TutorialFlowerGrowing.png";
 import TutorialFlowerMature  from "./TutorialFlowerMature.png";
-import TutorialFlowerNO from "./TutorialFlowerNO.png";
 
 import EmmayBudGrowing from "./EmmayBudGrowing.png";
 import EmmayBudMature  from "./EmmayBudMature.png";
+
 import JHideoutGrowing from "./JHideoutGrowing.png";
 import JHideoutMature from "./JHideoutMature.png";
 
 import JerelilyGrowing from "./JerelilyGrowing.png";
-import JerelilyMature from "./JerelilyMature.png";
+import JerelilyMature  from "./JerelilyMature.png";
+
 import TimintGrowing from "./TimintGrowing.png";
-import TimintMature from "./TimintMature.png";
+import TimintMature  from "./TimintMature.png";
 
 import BlueFlowerGrowing from "./BlueFlowerGrowing.png";
-import BlueFlowerMature from "./BlueFlowerMature.png";
-import RedFlowerGrowing from "./RedFlowerGrowing.png";
-import RedFlowerMature from './RedFlowerMature.png';
-import PurpleFlowerGrowing from "./PurpleFlowerGrowing.png";
-import PurpleFlowerMature from './PurpleFlowerMature.png';
-import OrangeFlowerGrowing from "./OrangeFlowerGrowing.png";
-import OrangeFlowerMature from "./OrangeFlowerMature.png";
-import GoldFlowerGrowing from "./GoldFlowerGrowing.png";
-import GoldFlowerMature from "./GoldFlowerMature.png";
+import BlueFlowerMature  from "./BlueFlowerMature.png";
 
+import AugieBeautyGrowing from "./AugieBeautyGrowing.png";
+import AugieBeautyMature  from './AugieBeautyMature.png';
+
+import HeatherGrowing from "./HeatherGrowing.png";
+import HeatherMature  from './HeatherMature.png';
+
+import GeovannirodGrowing from "./GeovannirodGrowing.png";
+import GeovannirodMature  from "./GeovannirodMature.png";
+
+import SillyDillyGrowing from "./SillyDillyGrowing.png";
+import SillyDillyMature  from "./SillyDillyMature.png";
+
+import TomBlossomGrowing from "./TomBlossomGrowing.png";
+import TomBlossomMature  from "./TomBlossomMature.png";
+
+import NoalionGrowing from "./NoalionGrowing.png";
+import NoalionMature  from "./NoalionMature.png";
 
 const getPlantDisplay = (plantId=0, growthStage="Just Planted") => {
   // plantImages entries must align with plant_id in database
@@ -62,8 +73,8 @@ const getPlantDisplay = (plantId=0, growthStage="Just Planted") => {
       "Grey":     TutorialFlowerNO,
       "Just Planted": Mound,
       "Seedling": Seedling,
-      "Growing":  GoldFlowerGrowing,
-      "Mature":   GoldFlowerMature
+      "Growing":  SillyDillyGrowing,
+      "Mature":   SillyDillyMature
     },
     { // id 5 => Jerelily
       "Grey":     TutorialFlowerNO,
@@ -83,43 +94,36 @@ const getPlantDisplay = (plantId=0, growthStage="Just Planted") => {
       "Grey":     TutorialFlowerNO,
       "Just Planted": Mound,
       "Seedling": Seedling,
-      "Growing":  RedFlowerGrowing,
-      "Mature":   RedFlowerMature
+      "Growing":  AugieBeautyGrowing,
+      "Mature":   AugieBeautyMature
     },
     { // id 8 => Geovannirod
       "Grey":     TutorialFlowerNO,
       "Just Planted": Mound,
       "Seedling": Seedling,
-      "Growing":  OrangeFlowerGrowing,
-      "Mature":   OrangeFlowerMature
+      "Growing":  GeovannirodGrowing,
+      "Mature":   GeovannirodMature
     },
     { // id 9 => Heather
       "Grey":     TutorialFlowerNO,
       "Just Planted": Mound,
       "Seedling": Seedling,
-      "Growing":  PurpleFlowerGrowing,
-      "Mature":   PurpleFlowerMature
+      "Growing":  HeatherGrowing,
+      "Mature":   HeatherMature
     },
     { // id 10 => Tom Blossom
       "Grey":     TutorialFlowerNO,
       "Just Planted": Mound,
       "Seedling": Seedling,
-      "Growing":  OrangeFlowerGrowing,
-      "Mature":   OrangeFlowerMature
+      "Growing":  TomBlossomGrowing,
+      "Mature":   TomBlossomMature
     },
     { // id 11 => Noalion
       "Grey":     TutorialFlowerNO,
       "Just Planted": Mound,
       "Seedling": Seedling,
-      "Growing":  OrangeFlowerGrowing,
-      "Mature":   OrangeFlowerMature
-    },
-    { // Not used
-      "Grey":     TutorialFlowerNO,
-      "Just Planted": Mound,
-      "Seedling": Seedling,
-      "Growing":  OrangeFlowerGrowing,
-      "Mature":   OrangeFlowerMature
+      "Growing":  NoalionGrowing,
+      "Mature":   NoalionMature
     }
   ];
   return plantImages[plantId][growthStage];

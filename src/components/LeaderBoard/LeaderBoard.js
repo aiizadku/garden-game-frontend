@@ -50,6 +50,7 @@ const LeaderBoard = () => {
 
   useEffect(() => {
     UserAPI.fetchUserStats().then((json) => {
+<<<<<<< HEAD
       json.sort((a, b) => {
         return b.profile.xp - a.profile.xp;
       });
@@ -57,6 +58,14 @@ const LeaderBoard = () => {
       // console.log(json);
     });
   }, []);
+=======
+      json.sort((a, b)=> {
+        return b.profile.xp - a.profile.xp
+      })
+      setStatList(json.slice(0,10))
+    })
+  }, [])
+>>>>>>> main
 
   const makeTable = () => {
     return (
@@ -82,13 +91,15 @@ const LeaderBoard = () => {
   };
 
   return (
-    <div>
-      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
-        LeaderBoard
+    <div >
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+    LeaderBoard
       </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <div>{makeTable()}</div>
-      </Dialog>
+    <Dialog open={open} onClose={handleClose}>
+      <div >
+        {makeTable()}
+        </div>
+    </Dialog>
     </div>
     // <Grid container spacing={1} align='center'>
     //   <Grid item xs={12}>
@@ -102,7 +113,12 @@ const LeaderBoard = () => {
     //     </Grid>
     //   </Dialog>
     // </Grid>
+<<<<<<< HEAD
   );
 };
+=======
+  )
+}
+>>>>>>> main
 
 export default LeaderBoard;
