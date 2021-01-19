@@ -4,6 +4,7 @@ import { useContext, useState, useEffect } from "react";
 import {UserContext} from '../../contexts/UserContext'
 import UserApi from '../../api/UserApi';
 import PlayerInfoBox from '../UI/PlayerInfoBox';
+import SoundControls from "../Sound/SoundControls";
 
 const useStyles = makeStyles({
   ground: {
@@ -123,6 +124,7 @@ const Ground = props => {
         currentXp={currentXp}
         currentLevel={currentLevel}
       />
+      <SoundControls />
     </div>
   )
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, makeStyles } from '@material-ui/core';
+import gsap from 'gsap';
 
 
 const useStyles = makeStyles({
@@ -16,6 +17,7 @@ const useStyles = makeStyles({
     border: "4px solid #7B3503",
     backgroundColor: 'tan',
     borderTopRightRadius: 8,
+    overflow: "hidden"
   },
   leftColumn: {
     marginLeft: "15px"
@@ -26,10 +28,38 @@ const useStyles = makeStyles({
 })
 
 const PlayerInfoBox = props => {
+  // Start Open
+  const [isOpen, setIsOpen] = React.useState(true);
+  const [yOffset, setYOffset] = React.useState(0);
   const classes = useStyles();
 
+  const toggleOpen = () => {
+    if (isOpen) {
+      // Close box
+      console.log("closing info box")
+      setIsOpen(false);
+      setYOffset(90);
+    }
+    else {
+      // Open box
+      console.log("opening info box")
+      setIsOpen(true);
+      setYOffset(0);
+    }
+  };
+
+  React.useEffect(
+    ()=>{
+      // Play animation
+      gsap.to("#PlayerInfoBox", {
+        duration: 0.5,
+        y: yOffset
+      });
+    }, [isOpen, yOffset]
+  );
+
   return(
-    <Box className={classes.root}>
+    <Box className={classes.root} onClick={toggleOpen} id="PlayerInfoBox">
       <Box style={{
         gridColumn: "1 / 3",
         gridRow:    "1 / 2",
