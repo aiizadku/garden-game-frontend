@@ -24,25 +24,25 @@ const GardenPage = (props) => {
   const [weather, setWeather] = useState("");
   const [error, setError] = useState({ error: false, message: null });
 
-  // useEffect(() => {
-  //   getIP().then((json) => {
-  //     setUserState(json.region);
-  //     setCity(json.city);
-  //   });
-  // }, []);
+  useEffect(() => {
+    getIP().then((json) => {
+      setUserState(json.region);
+      setCity(json.city);
+    });
+  }, []);
 
-  // useEffect(() => {
-  //   getWeather(city, userState).then((data) => {
-  //     // console.log(data)
-  //     setWeather(data);
-  //   });
-  // }, [city]);
+  useEffect(() => {
+    getWeather(city, userState).then((data) => {
+      // console.log(data)
+      setWeather(data);
+    });
+  }, [city]);
 
   // console.log('my location: ',city, userState);
 
-  useEffect(() => {
-    setWeather("Snow");
-  },[]);
+  // useEffect(() => {
+  //   setWeather("Snow");
+  // },[]);
 
   
   // SFX Context /////
