@@ -13,10 +13,16 @@ class Timer {
     this.interval = interval;
     this.timerHandle = null;
     this.isRunning = false;
+    this.timeStamp = Date.now();
   }
+  /**
+   * Start timer.
+   * Records current datetime (if not running) before starting.
+   */
   start = () => {
     if (!this.isRunning) {
       console.log(`Timer started. ${this.remainingTime}ms remain.`);
+      this.timeStamp = Date.now();
       this.timerHandle = setInterval(this.update, this.interval);
       this.isRunning = true;
     }
@@ -25,12 +31,19 @@ class Timer {
   }
   stop = () => {
     console.log("Timer stopped.")
+    // Update time remaining
+    // this.remainingTime -= (Date.now() - this.timeStamp);
+    // if (this.remainingTime <= 0)
+    //   this.onComplete();
+    // Stop interval
     clearInterval(this.timerHandle);
     this.isRunning = false;
   }
   update = () => {
     // Update elapsed time
-    this.remainingTime -= this.interval;
+    const now = Date.now();
+    this.remainingTime -= (now - this.timeStamp);
+    this.timeStamp = now;
     // Perform update action
     this.onUpdate();
     // Check to see if timer has reached end
@@ -49,9 +62,13 @@ class Timer {
   reset = () => {
     console.log("Timer reset.")
     this.stop();
+
+    // Can be reset before starting
+    // Check for interval
     if (this.timerHandle) {
       clearInterval(this.timerHandle);
     }
+    
     // Reset elapsed time
     this.remainingTime = this.maxTime;
     this.isDone = false;
