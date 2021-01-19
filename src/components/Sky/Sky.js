@@ -2,6 +2,7 @@ import { makeStyles, TextareaAutosize } from "@material-ui/core";
 import UserBalance from "../User Balance/UserBalance";
 import { UserContext } from "../../contexts/UserContext";
 import { useContext } from "react";
+import LeaderBoard from "../LeaderBoard/LeaderBoard";
  
 
 const useStyles = makeStyles({
@@ -72,7 +73,7 @@ const Sky = (props) => {
           : classes[props.weather] || classes.Clear
       }
     >
-      {user && <UserBalance />}
+      <LeaderBoard/>
       
     </div>
   );
