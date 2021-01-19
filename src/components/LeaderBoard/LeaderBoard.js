@@ -50,22 +50,12 @@ const LeaderBoard = () => {
 
   useEffect(() => {
     UserAPI.fetchUserStats().then((json) => {
-<<<<<<< HEAD
-      json.sort((a, b) => {
-        return b.profile.xp - a.profile.xp;
-      });
-      setStatList(json.slice(0, 10));
-      // console.log(json);
-    });
-  }, []);
-=======
       json.sort((a, b)=> {
         return b.profile.xp - a.profile.xp
       })
       setStatList(json.slice(0,10))
     })
   }, [])
->>>>>>> main
 
   const makeTable = () => {
     return (
@@ -113,12 +103,7 @@ const LeaderBoard = () => {
     //     </Grid>
     //   </Dialog>
     // </Grid>
-<<<<<<< HEAD
-  );
-};
-=======
   )
 }
->>>>>>> main
 
 export default LeaderBoard;
