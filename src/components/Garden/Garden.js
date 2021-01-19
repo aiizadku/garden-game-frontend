@@ -6,6 +6,7 @@ import { UserContext } from '../../contexts/UserContext'
 import { useContext, useState } from "react";
 import { SfxPlayerContext } from '../../pages/GardenPage';
 import CoinClip from '../Sound/SoundFiles/CoinClip.wav';
+import SoundControls from '../Sound/SoundControls.js'
 
 
 // CSS styles //////

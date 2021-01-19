@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import getIP from "../api/LocationApi";
 import CoinClip from "../components/Sound/SoundFiles/CoinClip.wav";
 import getWeather from "../api/WeatherApi";
+import SoundControls from '../components/Sound/SoundControls.js'
 
 const useStyles = makeStyles({
   container: {
