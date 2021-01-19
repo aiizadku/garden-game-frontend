@@ -17,7 +17,8 @@ class App extends Component {
       user: {},
       garden: {rows: 0, columns: 0},
       profile: {}
-    }
+    },
+    userStats: []
   }
 
   setLoggedIn = (data) => {
@@ -44,16 +45,20 @@ class App extends Component {
       newState.garden = data.garden
       this.setState({gameState: newState})
     })
+    UserAPI.fetchUserStats().then((json) => {
+      this.setState({userStats: json})
+    })
   }
 
   render() {
     return (
       <div className="App">
         <UserContext.Provider
-          value={{isLoggedIn: this.state.isLoggedIn, setLoggedIn: this.setLoggedIn, token: this.state.token, gameState: this.state.gameState, setGameData: this.setGameData}}>
+          value={{isLoggedIn: this.state.isLoggedIn, setLoggedIn: this.setLoggedIn, token: this.state.token, gameState: this.state.gameState, setGameData: this.setGameData, userStats: this.state.userStats}}>
           <BrowserRouter>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/login" component={LoginPage} />
+            
             <Route exact path="/garden" component={GardenPage} />
           </BrowserRouter>
         </UserContext.Provider>

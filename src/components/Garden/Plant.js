@@ -4,6 +4,10 @@ import gsap from 'gsap';
 import PlantDetailDialog from '../Dialogs/PlantDetailDialog';
 import { makeStyles } from '@material-ui/core';
 import Timer from "../../utils/Timer";
+import { SfxPlayerContext } from '../../pages/GardenPage';
+import CoinClip from "../Sound/SoundFiles/CoinClip.wav";
+import PopClip from "../Sound/SoundFiles/PopClip.wav";
+
 
 const useStyles = makeStyles({
   plantContainer: {
@@ -32,10 +36,22 @@ const useStyles = makeStyles({
 const Plant = (props) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [timerHandle, setTimerHandle] = React.useState(null);
+  const sfxPlayer = React.useContext(SfxPlayerContext);
   const [waterTimerHandle, setWaterTimerHandle] = React.useState(null);
   const [isWatered, setIsWatered] = React.useState(false);
   const classes = useStyles();
   const WATER_TIME_DURATION = 10; // in seconds
+
+  
+  const playSound = soundPath => {
+    if (!sfxPlayer.isSfxMuted) {
+      sfxPlayer.audioHandle.pause();
+      sfxPlayer.audioHandle.src = soundPath;
+      sfxPlayer.audioHandle.load();
+      sfxPlayer.audioHandle.play();
+    }
+  };
+
 
   const getGrowthStatus = (percentGrown) => {
     if (percentGrown >= 100) return "Mature";
@@ -65,6 +81,7 @@ const Plant = (props) => {
   };
   const handleHarvest = () => {
     console.log(`Harvest plant ${props.id}`);
+    playSound(CoinClip);
 
     // Clear and invalidate timers
     waterTimerHandle.stop();
@@ -79,18 +96,25 @@ const Plant = (props) => {
     setIsMenuOpen(false);
   }
 
+
+  // Force update for timer in dialog
+  const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+
+
   // useEffects //////
-  React.useEffect( // When component first loads, create a timer and water timer
+  // When component first loads, create a timer
+  React.useEffect(
+
     ()=> {
       console.log("useEffect: Creating grow timer and water timer.")
-      const rowColData = props.id.slice(4).split('-');
+      //const rowColData = props.id.slice(4).split('-');
       const interval = 100; // 0.1s update interval
-      const updateTime = () => props.updateElapsedGrowTime(rowColData[0], rowColData[1], interval/1000);
+      //const updateTime = () => props.updateElapsedGrowTime(rowColData[0], rowColData[1], interval/1000);
       setTimerHandle(
         new Timer(
           props.timeToMature*1000,
-          ()=>{},
-          updateTime,
+          ()=>{playSound(PopClip)},
+          ()=>{},// updateTime,
           props.remainingTime*1000,
           interval
         )
@@ -104,7 +128,7 @@ const Plant = (props) => {
           ()=>{ // onComplete
             setIsWatered(false);
           },
-          ()=>{}, // onUpdate
+          forceUpdate, // onUpdate
           waterTimeRemaining,
           interval // 0.1s update interval
         )
@@ -163,7 +187,8 @@ const Plant = (props) => {
             handleWater={handleWater}
             handleBack={handleBack}
             growthStatus={getGrowthStatus(timerHandle.status()*100)}
-            remainingTime={props.remainingTime}
+            // remainingTime={props.remainingTime}
+            remainingTime={Math.ceil(timerHandle.remainingTime/1000)}
             isWatered={props.isWatered}
             waterPercent={(1-waterTimerHandle.status())*100}
           />

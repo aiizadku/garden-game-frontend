@@ -5,6 +5,7 @@ import TestButton from "../components/TestButton/TestButton";
 import React, { useEffect, useState } from "react";
 import getIP from "../api/LocationApi";
 import SoundControls from "../components/Sound/SoundControls";
+import CoinClip from "../components/Sound/SoundFiles/CoinClip.wav";
 import getWeather from "../api/WeatherApi";
 
 const useStyles = makeStyles({
@@ -12,6 +13,10 @@ const useStyles = makeStyles({
     textAlign: "center",
   },
 });
+
+// Create context
+// Gives { Provider, Consumer }
+export const SfxPlayerContext = React.createContext();
 
 const GardenPage = (props) => {
   const [userState, setUserState] = useState("");
@@ -38,13 +43,42 @@ const GardenPage = (props) => {
   //   setWeather("tornado");
   // },[]);
 
+  
+  // SFX Context /////
+  const [sfxVolume, setSfxVolume] = React.useState(50);
+  const [isSfxMuted, setIsSfxMuted] = React.useState(false);
+  const audio = new Audio(CoinClip);
+  audio.volume   = sfxVolume/100;
+  audio.autoplay = false;
+  audio.loop     = false;
+  const [sfxAudioHandle, setSfxAudioHandle] = React.useState(audio);
+
+  const providerObj = {
+    audioHandle:sfxAudioHandle,
+    volumeControl: setSfxVolume,
+    volume: sfxVolume,
+    isSfxMuted: isSfxMuted,
+    setIsSfxMuted: setIsSfxMuted
+  };
+
+  // Update audio when volume changes.
+  React.useEffect(
+    ()=>{
+      sfxAudioHandle.volume = sfxVolume/100;
+    }, [sfxVolume, sfxAudioHandle, isSfxMuted]
+  );
+
+
+  // getLocation();
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      <Sky weather={weather} />
-      {/*<TestButton />*/ null}
-      <Ground />
-      <SoundControls />
+      <SfxPlayerContext.Provider value={providerObj}>
+        <Sky weather={weather} />
+        {/* <TestButton /> */}
+        <Ground />
+        <SoundControls />
+      </SfxPlayerContext.Provider>
     </div>
   );
 };

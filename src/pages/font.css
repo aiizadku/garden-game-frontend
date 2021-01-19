@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'TooneyNoodleNF';
+  src: url('TooneyNoodleNF.eot');
+  src: url('TooneyNoodleNF.eot?#iefix') format('embedded-opentype'),
+       url('TooneyNoodleNF.svg#TooneyNoodleNF') format('svg'),
+       url('TooneyNoodleNF.ttf') format('truetype'),
+       url('TooneyNoodleNF.woff') format('woff'),
+       url('TooneyNoodleNF.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+

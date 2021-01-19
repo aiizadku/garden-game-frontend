@@ -4,6 +4,9 @@ import GardenPlot from './GardenPlot';
 import { harvestPlant, loadGarden, getPlantDetail } from "../../api/GameApi";
 import { UserContext } from '../../contexts/UserContext'
 import { useContext, useState } from "react";
+import { SfxPlayerContext } from '../../pages/GardenPage';
+import CoinClip from '../Sound/SoundFiles/CoinClip.wav';
+
 
 // CSS styles //////
 const useStyles = makeStyles({
@@ -53,8 +56,9 @@ const Garden = (props) => {
   const [GardenjsonObject, setGardenJsonObject] = React.useState({});
   const [gardenGrid, setGardenGrid] = React.useState([]);
   const classes = useStyles();
-  const [amountToAdd, setAmountToAdd] = useState(0)
-  const [xpToAdd, setXpToAdd] = useState(0)
+  const [amountToAdd, setAmountToAdd] = React.useState(0);
+  const [xpToAdd, setXpToAdd] = React.useState(0);
+  const sfxPlayer = React.useContext(SfxPlayerContext);
 
   /**
    * Deletes plant from database.
@@ -81,6 +85,14 @@ const Garden = (props) => {
           isHarvested: false
         };
         updateGarden(gardenPlotsData);
+        // Play coin sound
+        // console.log("sfxPlayer: ")
+        // console.log(sfxPlayer);
+        // if (!sfxPlayer.isSfxMuted) {
+        //   sfxPlayer.audioHandle.src = CoinClip;
+        //   sfxPlayer.audioHandle.load();
+        //   sfxPlayer.audioHandle.play();
+        // }
       }
     });
     getPlantDetail(plantId)
