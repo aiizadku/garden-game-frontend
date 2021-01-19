@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import UserAPI from '../../api/UserApi'
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, makeStyles, IconButton } from "@material-ui/core";
 import { Dialog } from '@material-ui/core';
 import {TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Grid,} from '@material-ui/core'
+import podium from '../../images/podium (3).png';
 
 
 const useStyles = makeStyles({
@@ -17,6 +18,13 @@ const useStyles = makeStyles({
   content: {
     backgroundColor: "tan",
     borderBottom: "2px solid #b89e7b",
+  },
+  button: {
+    // backgroundColor: '#e9b0df',
+    position: 'absolute',
+    bottom: '2%',
+    width: '20%',
+    left: '40%',
   },
   hover: {
     "&:hover": {
@@ -92,9 +100,12 @@ const LeaderBoard = () => {
     // </div>
     <Grid container spacing={1} align='center'>
       <Grid item xs={12}>
-        <Button variant="contained" color="primary" onClick={handleClickOpen}>
-           LeaderBoard
-        </Button>
+        {/* <Button className={classes.button} onClick={handleClickOpen}>
+        <img width='20%' src ={icon}/>
+        </Button> */}
+        <IconButton color="primary" className={classes.button} onClick={handleClickOpen} component="span">
+        <img width='40%' src ={podium}/>
+        </IconButton>
       </Grid>
       <Dialog open={open} onClose={handleClose}>
         <Grid item xs={12}>

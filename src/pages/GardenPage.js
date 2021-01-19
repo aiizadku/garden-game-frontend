@@ -76,7 +76,7 @@ const GardenPage = (props) => {
       <SfxPlayerContext.Provider value={providerObj}>
         <Sky weather={weather} />
         {/* <TestButton /> */}
-        <Ground />
+        <Ground {...props}/>
         <SoundControls />
       </SfxPlayerContext.Provider>
     </div>

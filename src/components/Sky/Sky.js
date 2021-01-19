@@ -73,7 +73,7 @@ const Sky = (props) => {
           : classes[props.weather] || classes.Clear
       }
     >
-      <LeaderBoard/>
+      {/* <LeaderBoard/> */}
       
     </div>
   );
