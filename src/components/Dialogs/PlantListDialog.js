@@ -65,6 +65,7 @@ const PlantList = (props) => {
   const [allSeeds, setAllSeeds] = React.useState([]);
   const { gameState } = useContext(UserContext);
   const [currentBalance, setCurrentBalance] = React.useState(0);
+  const [currentLevel, setCurrentLevel] = React.useState(0);
 
   // Gets list of seeds from backend after initial render
   React.useEffect(
@@ -78,9 +79,18 @@ const PlantList = (props) => {
       });
       UserApi.fetchUserBalanceByID(gameState.user.id)
       .then(data=>setCurrentBalance(data.current_balance));
+
+      
     }, [gameState.user.id]
   );
 
+  React.useEffect(()=>{
+    UserApi.currentUser(localStorage.getItem("token")).then((resp)=>{
+      resp.json().then((data)=>{
+        setCurrentLevel(data.profile.current_level)
+      })
+    })
+  }, [currentBalance])
 
   const makeListItem = (plantInfo) => {
     return (
@@ -123,9 +133,14 @@ const PlantList = (props) => {
       <DialogTitle className={classes.title}>Buy a Plant?</DialogTitle>
       <DialogContent className={classes.content}>
         <List className={classes.root}>
-          {allSeeds.length 
-            ? allSeeds.map(makeListItem) 
-            : null}
+          {
+            currentLevel === 0
+            ?
+            allSeeds.map(makeListItem).slice(0,1)
+            :
+            allSeeds.map(makeListItem).slice(1) 
+          }
+            
         </List>
       </DialogContent>
       <DialogActions style={{ backgroundColor: "tan" }}>

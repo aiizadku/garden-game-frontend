@@ -60,7 +60,6 @@ const LeaderBoard = () => {
         return b.profile.xp - a.profile.xp
       })
       setStatList(json.slice(0,10))
-      console.log(json)
     })
   }, [])
 

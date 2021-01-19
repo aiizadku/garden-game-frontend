@@ -1,16 +1,15 @@
 import Sky from "../components/Sky/Sky";
 import Ground from "../components/Ground/Ground";
 import { makeStyles } from "@material-ui/core";
-import TestButton from "../components/TestButton/TestButton";
 import React, { useEffect, useState } from "react";
 import getIP from "../api/LocationApi";
-import SoundControls from "../components/Sound/SoundControls";
 import CoinClip from "../components/Sound/SoundFiles/CoinClip.wav";
 import getWeather from "../api/WeatherApi";
 
 const useStyles = makeStyles({
   container: {
     textAlign: "center",
+    overflow: 'hidden'
   },
 });
 

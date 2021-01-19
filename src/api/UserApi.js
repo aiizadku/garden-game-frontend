@@ -52,7 +52,7 @@ const fetchUserBalanceByID = (userID) => {
 }
 
 const addToBalanceByID = (userID, addedAmountObject) => {
-  console.log("Updating player balance to ", addedAmountObject);
+  // console.log("Updating player balance to ", addedAmountObject);
   return fetch(`http://127.0.0.1:8000/api/profile/${userID}/`, {
     headers: {
       'Content-Type': 'application/json',

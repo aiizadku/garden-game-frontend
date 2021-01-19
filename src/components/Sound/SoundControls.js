@@ -7,6 +7,7 @@ import VolumeMuteIcon from '@material-ui/icons/VolumeMute';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import { SfxPlayerContext } from '../../pages/GardenPage';
+import gsap from 'gsap';
 
 const useStyles = makeStyles({
   root: {
@@ -100,16 +101,52 @@ const SoundControls = props => {
       setIsSfxMuted(true);
   }
 
+
+  // Open and close Animation //////
+  // Start open
+  const [isOpen, setIsOpen] = React.useState(true);
+  const [yOffset, setYOffset] = React.useState(0);
+
+  const toggleOpen = () => {
+    if (isOpen) {
+      // Close box
+      console.log("closing Sound Control box");
+      setIsOpen(false);
+      setYOffset(180);
+    }
+    else {
+      // Open box
+      console.log("opening Sound Control box");
+      setIsOpen(true);
+      setYOffset(0);
+    }
+  };
+
+  React.useEffect(
+    ()=>{
+      // Play animation
+      gsap.to("#SoundControlBox", {
+        duration: 0.5,
+        y: yOffset
+      });
+    }, [isOpen, yOffset]
+  );
+
+
+
   return(
-    <Box className={classes.root}>
+    <Box className={classes.root} id="SoundControlBox">
       {/* Sound title bar //////////*/}
       <Box style={{
-        gridColumn: "1 / 3",
-        gridRow:    "1 / 2",
-        backgroundColor: "saddlebrown",
-        borderBottom: "4px solid #7B3503"
-      }}>
-        Sound
+          gridColumn: "1 / 3",
+          gridRow:    "1 / 2",
+          backgroundColor: "saddlebrown",
+          borderBottom: "4px solid #7B3503"
+        }}
+        onClick={toggleOpen}
+
+      >
+        Sound Options
       </Box>
 
 

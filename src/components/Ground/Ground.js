@@ -5,6 +5,8 @@ import {UserContext} from '../../contexts/UserContext'
 import UserApi from '../../api/UserApi';
 import LeaderBoard from "../LeaderBoard/LeaderBoard";
 import directionsign from '../../images/directionsign.png'
+import PlayerInfoBox from '../UI/PlayerInfoBox';
+import SoundControls from "../Sound/SoundControls";
 
 const useStyles = makeStyles({
   ground: {
@@ -125,9 +127,9 @@ const Ground = (props) => {
 
   return (
     <div className={classes.ground}>
-      User Balance: { currentBalance }
+      {/* User Balance: { currentBalance }
         User XP: { currentXp }
-        User Level: { currentLevel }
+        User Level: { currentLevel } */}
       <Garden 
       addMoney={addMoney}
       subtractMoney={subtractMoney}
@@ -135,6 +137,13 @@ const Ground = (props) => {
       <LeaderBoard/>
       {/* <Button onClick={handleLogout} className={classes.button}>Logout</Button> */}
       <a className={classes.button} onClick={handleLogout}><img width="100%" src={directionsign}></img></a>
+      <PlayerInfoBox
+        username={gameState.user.username}
+        currentBalance={currentBalance}
+        currentXp={currentXp}
+        currentLevel={currentLevel}
+      />
+      <SoundControls />
     </div>
   )
 };
