@@ -94,11 +94,11 @@ const Ground = props => {
         user: id,
         current_balance: data.current_balance - plantValue
       }
-      console.log(
-      `Subtracting money.
-      Previous Balance  : $${data.current_balance}
-      Amount to Subtract: $${plantValue}
-      New Total Balance : $${addedAmountObject.current_balance}`);
+      // console.log(
+      // `Subtracting money.
+      // Previous Balance  : $${data.current_balance}
+      // Amount to Subtract: $${plantValue}
+      // New Total Balance : $${addedAmountObject.current_balance}`);
 
       UserApi.addToBalanceByID(id, addedAmountObject).then((data) => {
         setCurrentBalance(data.current_balance)

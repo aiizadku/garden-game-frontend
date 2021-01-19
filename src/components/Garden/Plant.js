@@ -74,13 +74,13 @@ const Plant = (props) => {
     }
   }
   const handleWater = () => {
-    console.log(`Water plant ${props.id}`);
+    // console.log(`Water plant ${props.id}`);
     setIsWatered(true);
     waterTimerHandle.reset();
     waterTimerHandle.start();
   };
   const handleHarvest = () => {
-    console.log(`Harvest plant ${props.id}`);
+    // console.log(`Harvest plant ${props.id}`);
     playSound(CoinClip);
 
     // Clear and invalidate timers
@@ -92,7 +92,7 @@ const Plant = (props) => {
     setIsMenuOpen(false);
   };
   const handleBack = () => {
-    console.log("Back clicked");
+    // console.log("Back clicked");
     setIsMenuOpen(false);
   }
 
@@ -106,7 +106,7 @@ const Plant = (props) => {
   React.useEffect(
 
     ()=> {
-      console.log("useEffect: Creating grow timer and water timer.")
+      // console.log("useEffect: Creating grow timer and water timer.")
       //const rowColData = props.id.slice(4).split('-');
       const interval = 100; // 0.1s update interval
       //const updateTime = () => props.updateElapsedGrowTime(rowColData[0], rowColData[1], interval/1000);
@@ -133,13 +133,13 @@ const Plant = (props) => {
           interval // 0.1s update interval
         )
       );
-      console.log("Water timer created.")
+      // console.log("Water timer created.")
     }, []
   )
   // When timerHandle is set, possibly start (depends on isWatered)
   React.useEffect(
     ()=> {
-      console.log("Checking water to see if timer should start.")
+      // console.log("Checking water to see if timer should start.")
       if (timerHandle && isWatered) {
         timerHandle.start();
       }
