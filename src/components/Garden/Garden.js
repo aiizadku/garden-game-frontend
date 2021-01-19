@@ -213,10 +213,10 @@ const Garden = (props) => {
         }
 
         // Fill in loaded plants
-        console.log("Checking for loaded plants.")
-        console.log(`Found ${GardenjsonObject["plants"].length} loaded plants`)
+        // console.log("Checking for loaded plants.")
+        // console.log(`Found ${GardenjsonObject["plants"].length} loaded plants`)
         for (let plant of GardenjsonObject["plants"]) {
-          console.log(plant)
+          // console.log(plant)
           gardenArray[plant.row_num][plant.column_num] = {
             isPlant: true,
             plantId: plant.plant_id,

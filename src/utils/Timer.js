@@ -21,7 +21,7 @@ class Timer {
    */
   start = () => {
     if (!this.isRunning) {
-      console.log(`Timer started. ${this.remainingTime}ms remain.`);
+      // console.log(`Timer started. ${this.remainingTime}ms remain.`);
       this.timeStamp = Date.now();
       this.timerHandle = setInterval(this.update, this.interval);
       this.isRunning = true;
@@ -30,7 +30,7 @@ class Timer {
       console.log("Timer already running.");
   }
   stop = () => {
-    console.log("Timer stopped.")
+    // console.log("Timer stopped.")
     // Update time remaining
     // this.remainingTime -= (Date.now() - this.timeStamp);
     // if (this.remainingTime <= 0)
@@ -60,7 +60,7 @@ class Timer {
   }
   // Stops and resets timer
   reset = () => {
-    console.log("Timer reset.")
+    // console.log("Timer reset.")
     this.stop();
 
     // Can be reset before starting

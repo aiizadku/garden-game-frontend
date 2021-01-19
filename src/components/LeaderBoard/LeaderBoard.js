@@ -1,9 +1,16 @@
-import { useEffect, useState } from 'react'
-import UserAPI from '../../api/UserApi'
+import { useEffect, useState } from "react";
+import UserAPI from "../../api/UserApi";
 import { Button, makeStyles } from "@material-ui/core";
-import { Dialog } from '@material-ui/core';
-import {TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Grid,} from '@material-ui/core'
-
+import { Dialog } from "@material-ui/core";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Grid,
+} from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -24,27 +31,22 @@ const useStyles = makeStyles({
     },
   },
   table: {
-    minWidth:250,
+    minWidth: 250,
   },
 });
 
-
-
 const LeaderBoard = () => {
-
   const classes = useStyles();
-  const [statList, setStatList] = useState([])
+  const [statList, setStatList] = useState([]);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-
   const handleClose = () => {
     setOpen(false);
   };
-
 
   useEffect(() => {
     UserAPI.fetchUserStats().then((json) => {
@@ -57,26 +59,26 @@ const LeaderBoard = () => {
 
   const makeTable = () => {
     return (
-        <TableContainer >
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead >
-              <TableRow className={classes.title}>
-                <TableCell>Name</TableCell>
-                <TableCell align="right">XP</TableCell>
+      <TableContainer>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow className={classes.title}>
+              <TableCell>Name</TableCell>
+              <TableCell align="right">XP</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {statList.map((user) => (
+              <TableRow key={user.username} className={classes.content}>
+                <TableCell>{user.username}</TableCell>
+                <TableCell align="right">{user.profile.xp}</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody >
-              {statList.map((user)=>(
-                <TableRow key={user.username} className={classes.content}>
-                  <TableCell>{user.username}</TableCell>
-                  <TableCell align="right">{user.profile.xp}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      );
-  }
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  };
 
   return (
     <div >
