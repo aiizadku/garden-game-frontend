@@ -52,7 +52,6 @@ const LeaderBoard = () => {
         return b.profile.xp - a.profile.xp
       })
       setStatList(json.slice(0,10))
-      console.log(json)
     })
   }, [])
 
@@ -80,28 +79,28 @@ const LeaderBoard = () => {
   }
 
   return (
-    // <div >
-    //   <Button variant="contained" color="secondary" onClick={handleClickOpen}>
-    // LeaderBoard
-    //   </Button>
-    // <Dialog open={open} onClose={handleClose}>
-    //   <div >
-    //     {makeTable()}
-    //     </div>
-    // </Dialog>
-    // </div>
-    <Grid container spacing={1} align='center'>
-      <Grid item xs={12}>
-        <Button variant="contained" color="primary" onClick={handleClickOpen}>
-           LeaderBoard
-        </Button>
-      </Grid>
-      <Dialog open={open} onClose={handleClose}>
-        <Grid item xs={12}>
-          {makeTable()}
-        </Grid>
-      </Dialog>
-    </Grid>
+    <div >
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+    LeaderBoard
+      </Button>
+    <Dialog open={open} onClose={handleClose}>
+      <div >
+        {makeTable()}
+        </div>
+    </Dialog>
+    </div>
+    // <Grid container spacing={1} align='center'>
+    //   <Grid item xs={12}>
+    //     <Button variant="contained" color="primary" onClick={handleClickOpen}>
+    //        LeaderBoard
+    //     </Button>
+    //   </Grid>
+    //   <Dialog open={open} onClose={handleClose}>
+    //     <Grid item xs={12}>
+    //       {makeTable()}
+    //     </Grid>
+    //   </Dialog>
+    // </Grid>
   )
 }
 
