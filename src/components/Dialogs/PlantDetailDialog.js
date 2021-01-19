@@ -15,16 +15,23 @@ const PlantDetailDialog = props => {
   // Opens when plant is clicked.
   // Harvest/Water button depends on growthStatus
   const [plantInfo, setPlantInfo] = React.useState({});
+  const [remainingTime, setRemainingTime] = React.useState(100);
 
   React.useEffect(
     ()=>{
+      setRemainingTime(props.remainingTime);
       getPlantDetail(props.plantId)
       .then(resp=>resp.json())
       .then(json=>setPlantInfo(json));
     }, []
   );
 
-  React.useEffect(()=>{}, [props.waterPercent]);
+  React.useEffect(
+    ()=>{
+      console.log("useEffect update");
+      setRemainingTime(props.remainingTime);
+    }
+  );
 
   // Liquid gauge variables
   const radius = 50;
@@ -75,7 +82,7 @@ const PlantDetailDialog = props => {
               Description: {plantInfo.description}
             </Typography>
             <Typography gutterBottom>
-              Time Remaining: {Number(props.remainingTime)>0 ? Number(props.remainingTime).toFixed(1) : 0} seconds
+              Time Remaining: {Number(props.remainingTime)>0 ? Number(props.remainingTime).toFixed(0) : 0} seconds
             </Typography>
             <Typography gutterBottom>
               Water Status: {props.isWatered ? "Watered" : "Dry"}
@@ -85,7 +92,7 @@ const PlantDetailDialog = props => {
                     style={{ margin: '0 auto' }}
                     width={radius * 2}
                     height={radius * 2}
-                    value={props.waterPercent}
+                    value={props.waterPercent.toFixed(0)}
                     percent="%"
                     textSize={1}
                     textOffsetX={0}
