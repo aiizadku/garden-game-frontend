@@ -1,8 +1,10 @@
 import Garden from "../Garden/Garden";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Button } from "@material-ui/core";
 import { useContext, useState, useEffect } from "react";
 import {UserContext} from '../../contexts/UserContext'
 import UserApi from '../../api/UserApi';
+import LeaderBoard from "../LeaderBoard/LeaderBoard";
+import directionsign from '../../images/directionsign.png'
 import PlayerInfoBox from '../UI/PlayerInfoBox';
 import SoundControls from "../Sound/SoundControls";
 
@@ -11,6 +13,14 @@ const useStyles = makeStyles({
     height: '70vh',
     position: 'relative',
     backgroundColor: "darkgreen"
+  },
+  button: {
+    position: 'absolute',
+    right: '0%',
+    top: '.01%',
+    cursor: 'pointer',
+    width: '10%',
+    height: '10%'
   }
 });
 
@@ -19,7 +29,7 @@ const useStyles = makeStyles({
  * Places garden in center of ground.
  * @param {object} props 
  */
-const Ground = props => {
+const Ground = (props) => {
 
   const { gameState } = useContext(UserContext)
 
@@ -109,6 +119,12 @@ const Ground = props => {
     });
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    
+    props.history.push('/')
+  }
+
   return (
     <div className={classes.ground}>
       {/* User Balance: { currentBalance }
@@ -118,6 +134,9 @@ const Ground = props => {
       addMoney={addMoney}
       subtractMoney={subtractMoney}
       />
+      <LeaderBoard/>
+      {/* <Button onClick={handleLogout} className={classes.button}>Logout</Button> */}
+      <a className={classes.button} onClick={handleLogout}><img width="100%" src={directionsign}></img></a>
       <PlayerInfoBox
         username={gameState.user.username}
         currentBalance={currentBalance}
