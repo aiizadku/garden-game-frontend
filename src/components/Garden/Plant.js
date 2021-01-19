@@ -4,6 +4,10 @@ import gsap from 'gsap';
 import PlantDetailDialog from '../Dialogs/PlantDetailDialog';
 import { makeStyles } from '@material-ui/core';
 import Timer from "../../utils/Timer";
+import { SfxPlayerContext } from '../../pages/GardenPage';
+import CoinClip from "../Sound/SoundFiles/CoinClip.wav";
+import PopClip from "../Sound/SoundFiles/PopClip.wav";
+
 
 const useStyles = makeStyles({
   plantContainer: {
@@ -29,6 +33,16 @@ const useStyles = makeStyles({
 const Plant = (props) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [timerHandle, setTimerHandle] = React.useState(null);
+  const sfxPlayer = React.useContext(SfxPlayerContext);
+
+  const playSound = soundPath => {
+    if (!sfxPlayer.isSfxMuted) {
+      sfxPlayer.audioHandle.src = soundPath;
+      sfxPlayer.audioHandle.load();
+      sfxPlayer.audioHandle.play();
+    }
+  };
+
 
   const getGrowthStatus = (percentGrown) => {
     if (percentGrown >= 100) return "Mature";
@@ -56,6 +70,7 @@ const Plant = (props) => {
   };
   const handleHarvest = () => {
     console.log(`Harvest plant ${props.id}`);
+    playSound(CoinClip);
     props.handleHarvest(props.plantId, props.id);
     setIsMenuOpen(false);
   };
@@ -63,6 +78,7 @@ const Plant = (props) => {
     console.log("Back clicked");
     setIsMenuOpen(false);
   }
+
 
   // When component first loads, create a timer
   React.useEffect(
@@ -72,7 +88,7 @@ const Plant = (props) => {
       // const updateElapsedGrowTime = (row, column, elapsedTime)
       const interval = 100; // 100 ms
       const updateTime = () => props.updateElapsedGrowTime(rowColData[0], rowColData[1], interval/1000)
-      setTimerHandle(new Timer(props.timeToMature*1000, ()=>{}, updateTime, props.remainingTime*1000, interval));
+      setTimerHandle(new Timer(props.timeToMature*1000, ()=>{playSound(PopClip)}, updateTime, props.remainingTime*1000, interval));
     }, []
   )
   // When timerHandle is set, possibly start (depends on isWatered)

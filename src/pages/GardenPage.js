@@ -6,7 +6,7 @@ import getLocation from "../api/LocationApi";
 import React, { useEffect, useState } from "react";
 import getIP from "../api/LocationApi";
 import SoundControls from "../components/Sound/SoundControls";
-import CoinSound from "../components/Sound/SoundFiles/Coin.wav";
+import CoinClip from "../components/Sound/SoundFiles/CoinClip.wav";
 
 const useStyles = makeStyles({
   container: {
@@ -27,25 +27,39 @@ const GardenPage = (props) => {
   //   getIP();
   // });
 
+  
   // SFX Context /////
-  const [sfxVolume, setSfxVolume] = React.useState(1);
-  const SfxAudioHandle = new Audio(CoinSound);
-  SfxAudioHandle.volume   = sfxVolume;
-  SfxAudioHandle.autoplay = false;
-  SfxAudioHandle.loop     = false;
-  // const sfxPlayerContextData = {
-  //   "handle": SfxAudioHandle,
-  //   "setSfxVolume": setSfxVolume,
-  // };
+  const [sfxVolume, setSfxVolume] = React.useState(100);
+  const [isSfxMuted, setIsSfxMuted] = React.useState(false);
+  const audio = new Audio(CoinClip);
+  audio.volume   = sfxVolume/100;
+  audio.autoplay = false;
+  audio.loop     = false;
+  const [sfxAudioHandle, setSfxAudioHandle] = React.useState(audio);
+
+  const providerObj = {
+    audioHandle:sfxAudioHandle,
+    volumeControl: setSfxVolume,
+    volume: sfxVolume,
+    isSfxMuted: isSfxMuted,
+    setIsSfxMuted: setIsSfxMuted
+  };
+
+  // Update audio when volume changes.
+  React.useEffect(
+    ()=>{
+      sfxAudioHandle.volume = sfxVolume/100;
+    }, [sfxVolume, sfxAudioHandle, isSfxMuted]
+  );
 
 
   // getLocation();
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      <SfxPlayerContext.Provider value={SfxAudioHandle}>
+      <SfxPlayerContext.Provider value={providerObj}>
         <Sky />
-        {<TestButton />}
+        {/* <TestButton /> */}
         <Ground />
         <SoundControls />
       </SfxPlayerContext.Provider>
