@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core";
 import { useContext, useState, useEffect } from "react";
 import {UserContext} from '../../contexts/UserContext'
 import UserApi from '../../api/UserApi';
+import PlayerInfoBox from '../UI/PlayerInfoBox';
+import SoundControls from "../Sound/SoundControls";
 
 const useStyles = makeStyles({
   ground: {
@@ -109,14 +111,20 @@ const Ground = props => {
 
   return (
     <div className={classes.ground}>
-      User Balance: { currentBalance }
+      {/* User Balance: { currentBalance }
         User XP: { currentXp }
-        User Level: { currentLevel }
+        User Level: { currentLevel } */}
       <Garden 
       addMoney={addMoney}
       subtractMoney={subtractMoney}
       />
-      
+      <PlayerInfoBox
+        username={gameState.user.username}
+        currentBalance={currentBalance}
+        currentXp={currentXp}
+        currentLevel={currentLevel}
+      />
+      <SoundControls />
     </div>
   )
 };
