@@ -81,7 +81,7 @@ const Sky = (props) => {
       }
     >
 
-      <LeaderBoard />
+      {/* <LeaderBoard /> */}
 
     </div>
   );
