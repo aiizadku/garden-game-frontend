@@ -11,7 +11,7 @@ import { SoundControlContext } from "../../contexts/SoundControlContext";
 
 const useStyles = makeStyles({
   ground: {
-    height: '70vh',
+    height: '60vh',
     position: 'relative',
     backgroundColor: "darkgreen"
   },
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 });
 
 /**
- * Bottom 70% of screen.
+ * Bottom 60% of screen.
  * Places garden in center of ground.
  * @param {object} props 
  */
