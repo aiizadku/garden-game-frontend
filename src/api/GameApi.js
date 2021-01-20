@@ -73,10 +73,29 @@ const loadGarden = () => {
 };
 
 
+/**
+ * Save state of planted plants in garden
+ * data requires watered, remaining_time, plant_id, column_number, row_number
+ * @param {object} data 
+ */
+const saveGarden = (data) => {
+  const token = localStorage.getItem("token");
+  return fetch(`http://localhost:8000/gardens/save/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `JWT ${token}`
+    },
+    body: JSON.stringify(data)
+  });
+};
+
+
 export { 
   harvestPlant,
   getSeeds,
   plantSeed,
   getPlantDetail, 
-  loadGarden
+  loadGarden,
+  saveGarden
  };

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Button } from "@material-ui/core"
-import { harvestPlant, getSeeds, loadGarden } from "../../api/GameApi";
+import { harvestPlant, getSeeds, loadGarden, saveGarden } from "../../api/GameApi";
 import Timer from "../../utils/Timer";
 import { SfxPlayerContext } from "../../pages/GardenPage";
 import CoinClip from "../Sound/SoundFiles/CoinClip.wav";
@@ -23,32 +23,26 @@ const TestButton = props => {
   // GetSeeds Test
   // const sendRequest = () => getSeeds().then(resp=>resp.json()).then(json=>console.log(json));
 
-  const sfxAudio = React.useContext(SfxPlayerContext);
+  // Save garden test
+ /*
+  plant_statuses should include {watered, remaining_time, plant_id, column_number, row_number, plant_id}
+  */
+  const data = {"plant_statuses": [{
+    "watered": true,
+    "remaining_time": 1,
+    "plant_id": 2,
+    "column_number": 0,
+    "row_number": 0
+  }]};
+  const sendRequest = () => saveGarden(data).then(resp=>resp.json()).then(json=>console.log(json));
 
   return(
     <div>
       Testing sfx
       <Button onClick={()=>{
-          console.log(`Testing sfx. Playing coins`);
-          if (!sfxAudio.isSfxMuted) {
-            console.log(sfxAudio.isSfxMuted);
-            sfxAudio.audioHandle.src = CoinClip;
-            sfxAudio.audioHandle.load();
-            sfxAudio.audioHandle.play();
-          }
-        }}>Test Coins</Button>
-        <Button onClick={()=>{
-          console.log(`Testing sfx. Playing dig`);
-          if (!sfxAudio.isSfxMuted) {
-            sfxAudio.audioHandle.src = ShovelClip;
-            sfxAudio.audioHandle.load();
-            sfxAudio.audioHandle.play();
-          }
-        }}>Test Dig</Button>
-        <Button onClick={()=>{
-          console.log(`Testing SFX mute.`);
-          sfxAudio.volume > 0 ? sfxAudio.volumeControl(0) : sfxAudio.volumeControl(100)
-        }}>Test Mute</Button>
+          console.log(`Testing save garden`);
+          sendRequest();
+        }}>Test Save</Button>
     </div>
   )
 }
