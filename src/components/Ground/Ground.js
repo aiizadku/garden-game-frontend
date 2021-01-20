@@ -1,12 +1,13 @@
 import Garden from "../Garden/Garden";
-import { makeStyles, Button } from "@material-ui/core";
-import { useContext, useState, useEffect } from "react";
+import { makeStyles, Button, Link } from "@material-ui/core";
+import React, { useContext, useState, useEffect } from "react";
 import {UserContext} from '../../contexts/UserContext'
 import UserApi from '../../api/UserApi';
 import LeaderBoard from "../LeaderBoard/LeaderBoard";
 import directionsign from '../../images/directionsign.png'
 import PlayerInfoBox from '../UI/PlayerInfoBox';
 import SoundControls from "../Sound/SoundControls";
+import { SoundControlContext } from "../../contexts/SoundControlContext";
 
 const useStyles = makeStyles({
   ground: {
@@ -30,19 +31,23 @@ const useStyles = makeStyles({
  * @param {object} props 
  */
 const Ground = (props) => {
-
-  const { gameState } = useContext(UserContext)
-
+  const { gameState } = useContext(UserContext);
   const classes = useStyles();
+  const [currentBalance, setCurrentBalance] = useState(0);
+  const [currentXp, setCurrentXp] = useState(0);
+  const [currentLevel, setCurrentLevel] = useState(0);
+  const { setStartBgm, bgmAudioHandle, isBgmMuted, setIsBgmMuted } = React.useContext(SoundControlContext);
 
-  const [currentBalance, setCurrentBalance] = useState(0)
-  const [currentXp, setCurrentXp] = useState(0)
-  const [currentLevel, setCurrentLevel] = useState(0)
-
+  useEffect(
+    ()=>{
+      console.log("Starting music")
+      setStartBgm(true);
+      setIsBgmMuted(false);
+    }, [setStartBgm]
+  );
 
   useEffect(() => {
     const { id } = gameState.user
-    // console.log("useEffect from Ground.js: ", gameState)
     UserApi.fetchUserBalanceByID(id).then((data) => {
       setCurrentBalance(data.current_balance)
       setCurrentXp(data.xp)
@@ -51,11 +56,8 @@ const Ground = (props) => {
   })
 
   useEffect(()=>{
-
     const { id } = gameState.user
-
     if (currentXp % 40 === 0 & currentXp !== 0){
-
       const levelObject = {
         user: id,
         // currentLevel / 40
@@ -106,11 +108,6 @@ const Ground = (props) => {
         user: id,
         current_balance: data.current_balance - plantValue
       }
-      // console.log(
-      // `Subtracting money.
-      // Previous Balance  : $${data.current_balance}
-      // Amount to Subtract: $${plantValue}
-      // New Total Balance : $${addedAmountObject.current_balance}`);
 
       UserApi.addToBalanceByID(id, addedAmountObject).then((data) => {
         setCurrentBalance(data.current_balance)
@@ -120,9 +117,10 @@ const Ground = (props) => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    
-    props.history.push('/')
+    if (bgmAudioHandle && !isBgmMuted)
+     setIsBgmMuted(true);
+    localStorage.removeItem('token');
+    props.history.push('/');
   }
 
   return (
@@ -136,7 +134,7 @@ const Ground = (props) => {
       />
       <LeaderBoard/>
       {/* <Button onClick={handleLogout} className={classes.button}>Logout</Button> */}
-      <a className={classes.button} onClick={handleLogout}><img width="100%" src={directionsign}></img></a>
+      <Link className={classes.button} onClick={handleLogout}><img width="100%" alt="logout" src={directionsign} /></Link>
       <PlayerInfoBox
         username={gameState.user.username}
         currentBalance={currentBalance}

@@ -4,8 +4,9 @@ import "./App.css";
 import LoginPage from "./pages/LoginPage.js";
 import HomePage from "./pages/HomePage.js";
 import {UserContext} from './contexts/UserContext';
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import UserAPI from './api/UserApi'
+import SoundControlContextProvider from './contexts/SoundControlContext';
 
 
 class App extends Component {
@@ -52,19 +53,28 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="App" style={{backgroundColor: "cornsilk"}}>
         <UserContext.Provider
-          value={{isLoggedIn: this.state.isLoggedIn, setLoggedIn: this.setLoggedIn, token: this.state.token, gameState: this.state.gameState, setGameData: this.setGameData, userStats: this.state.userStats}}>
-          <BrowserRouter>
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/login" component={LoginPage} />
-            
-            <Route exact path="/garden" component={GardenPage} />
-          </BrowserRouter>
+          value={{
+            isLoggedIn: this.state.isLoggedIn,
+            setLoggedIn: this.setLoggedIn,
+            token: this.state.token,
+            gameState: this.state.gameState,
+            setGameData: this.setGameData,
+            userStats: this.state.userStats}}
+        >
+          <SoundControlContextProvider>
+            <BrowserRouter>
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/login" component={LoginPage} />
+              <Route exact path="/garden" component={GardenPage} />
+            </BrowserRouter>
+          </SoundControlContextProvider>
         </UserContext.Provider>
       </div>
     );
   }
 }
+
 
 export default App;

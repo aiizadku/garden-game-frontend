@@ -1,12 +1,11 @@
 import React from 'react';
 import { Box, makeStyles } from '@material-ui/core';
-import BackgroundMusicLoop from "./SoundFiles/BackgroundMusicLoop.wav";
 import { Slider } from "@material-ui/core";
 import VolumeDownIcon from '@material-ui/icons/VolumeDown';
 import VolumeMuteIcon from '@material-ui/icons/VolumeMute';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import VolumeOffIcon from '@material-ui/icons/VolumeOff';
-import { SfxPlayerContext } from '../../pages/GardenPage';
+import { SoundControlContext } from '../../contexts/SoundControlContext';
 import gsap from 'gsap';
 
 const useStyles = makeStyles({
@@ -33,47 +32,12 @@ const useStyles = makeStyles({
 });
 
 const SoundControls = props => {
-  // Variables //////
   const classes = useStyles();
-  const [useMusic, setUseMusic] = React.useState(true);
-  const [audioHandle, setAudioHandle] = React.useState(null);
-  const [bgmVolume, setBgmVolume] = React.useState(50);
-  const sfxContext      = React.useContext(SfxPlayerContext);
-  const sfxVolume       = sfxContext.volume;
-  const adjustSfxVolume = sfxContext.volumeControl;
-  const isSfxMuted      = sfxContext.isSfxMuted;
-  const setIsSfxMuted   = sfxContext.setIsSfxMuted;
 
-  // UseEffect Initial Load //////
-  React.useEffect(
-    ()=> {
-      let audio = new Audio(BackgroundMusicLoop);
-      audio.autoplay = true;
-      audio.loop = true;
-      audio.volume= 0.5;
-      setAudioHandle(audio);
-    }, []
-  );
-
-  // Background Music useEffects //////
-  // Updates volume in audioHandle
-  // audioHandle requires 0 to 1, but volume is 0 to 100
-  React.useEffect(
-    ()=> {
-      if(audioHandle)
-        audioHandle.volume = bgmVolume/100;
-    }, [bgmVolume, audioHandle]
-  );
-  // Adjust volume
-  React.useEffect(
-    ()=>{
-      if (audioHandle) {
-        if (useMusic) audioHandle.play();
-        else audioHandle.pause();
-      }
-    }, [useMusic, audioHandle]
-  );
-
+  const {
+    sfxAudioHandle, sfxVolume, setSfxVolume, isSfxMuted, setIsSfxMuted,
+    bgmAudioHandle, bgmVolume, setBgmVolume, isBgmMuted, setIsBgmMuted
+  } = React.useContext(SoundControlContext);
 
   const renderAudioIcon = (volume, isMuted, onClickFunction) => {
     // If music is disabled, show volume off icon
@@ -91,13 +55,15 @@ const SoundControls = props => {
   };
 
   const toggleMusic = () => {
-    // Turn off music
-    setUseMusic(!useMusic);
+    if (isBgmMuted)
+      setIsBgmMuted(false);
+    else
+      setIsBgmMuted(true);
   }
   const toggleSfx = () => {
     if (isSfxMuted)
       setIsSfxMuted(false);
-    if (!isSfxMuted)
+    else
       setIsSfxMuted(true);
   }
 
@@ -170,9 +136,9 @@ const SoundControls = props => {
         className={classes.leftColumn}
       >
         <Slider
-          value={bgmVolume}
+          value={bgmVolume} // 0 to 100
           className={classes.volumeSlider}
-          onChange={(e,value)=>{console.log(bgmVolume); setBgmVolume(value)}}
+          onChange={(e,value)=>{console.log("setting bgm volume");setBgmVolume(value);}}
           orientation="vertical"
         />
       </Box>
@@ -184,7 +150,7 @@ const SoundControls = props => {
         }}
         className={classes.leftColumn}
       >
-        {renderAudioIcon(bgmVolume, !useMusic, toggleMusic)}
+        {renderAudioIcon(bgmVolume, isBgmMuted, toggleMusic)}
       </Box>
 
 
@@ -210,7 +176,7 @@ const SoundControls = props => {
         <Slider
           value={sfxVolume} // 0 to 100
           className={classes.volumeSlider}
-          onChange={(e,value)=>adjustSfxVolume(value)}
+          onChange={(e,value)=>setSfxVolume(value)}
           orientation="vertical"
         />
       </Box>

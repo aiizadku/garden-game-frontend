@@ -9,8 +9,19 @@ const getWeather = async (userCity, userState) => {
       },
     }
   );
+  // const condition = await response.json();
+  // const weather = await condition.weather[0].main;
+  // // console.log('WeatherAPI Condition: ', condition)
+  // return weather;
+
+  // Prevent crash from undefined weather
   const condition = await response.json();
-  const weather = await condition.weather[0].main;
+  let weather;
+  if (await condition.weather) {
+    weather = await condition.weather[0].main;
+  }
+  else
+    console.log("Undefined weather");
   // console.log('WeatherAPI Condition: ', condition)
   return weather;
 };
