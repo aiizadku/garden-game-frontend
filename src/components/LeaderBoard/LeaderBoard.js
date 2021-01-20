@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import UserAPI from "../../api/UserApi";
-import { Button, makeStyles } from "@material-ui/core";
 import { Dialog } from "@material-ui/core";
 import {
   TableContainer,
@@ -11,9 +10,10 @@ import {
   TableBody,
   Grid,
   Button,
-  makestyles,
+  makeStyles,
   IconButton
 } from "@material-ui/core";
+import podium from '../../images/podium (3).png'
 
 
 const useStyles = makeStyles({
