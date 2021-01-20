@@ -4,7 +4,6 @@ import GardenPlot from './GardenPlot';
 import { harvestPlant, loadGarden, getPlantDetail } from "../../api/GameApi";
 import { UserContext } from '../../contexts/UserContext'
 import { useContext, useState } from "react";
-import { SoundControlContext } from '../../contexts/SoundControlContext';
 
 
 // CSS styles //////
@@ -55,8 +54,6 @@ const Garden = (props) => {
   const [GardenjsonObject, setGardenJsonObject] = React.useState({});
   const [gardenGrid, setGardenGrid] = React.useState([]);
   const classes = useStyles();
-  const [amountToAdd, setAmountToAdd] = React.useState(0);
-  const [xpToAdd, setXpToAdd] = React.useState(0);
 
   /**
    * Deletes plant from database.
@@ -88,8 +85,6 @@ const Garden = (props) => {
     getPlantDetail(plantId)
     .then(response=>response.json())
     .then(data=> {
-      setAmountToAdd(data.currency)
-      setXpToAdd(data.exp_value)
       props.addMoney(data.currency, data.exp_value)
     });
   };

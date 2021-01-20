@@ -33,11 +33,7 @@ const GardenPlot = (props) => {
   // Variables //////
   const classes = useStyles();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const { sfxAudioHandle,
-          setSfxVolume,
-          sfxVolume,
-          isSfxMuted,
-          setIsSfxMuted }= React.useContext(SoundControlContext);
+  const { sfxAudioHandle, isSfxMuted}= React.useContext(SoundControlContext);
 
   // Button event click handlers //////
   // Called when a plant is clicked in the buying menu.
