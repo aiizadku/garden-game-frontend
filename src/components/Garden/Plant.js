@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import PlantDetailDialog from '../Dialogs/PlantDetailDialog';
 import { makeStyles } from '@material-ui/core';
 import Timer from "../../utils/Timer";
-import { SfxPlayerContext } from '../../pages/GardenPage';
+import { SoundControlContext } from '../../contexts/SoundControlContext';
 import CoinClip from "../Sound/SoundFiles/CoinClip.wav";
 import PopClip from "../Sound/SoundFiles/PopClip.wav";
 
@@ -36,19 +36,23 @@ const useStyles = makeStyles({
 const Plant = (props) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [timerHandle, setTimerHandle] = React.useState(null);
-  const sfxPlayer = React.useContext(SfxPlayerContext);
   const [waterTimerHandle, setWaterTimerHandle] = React.useState(null);
   const [isWatered, setIsWatered] = React.useState(false);
   const classes = useStyles();
   const WATER_TIME_DURATION = 10; // in seconds
+  const { sfxAudioHandle,
+          setSfxVolume,
+          sfxVolume,
+          isSfxMuted,
+          setIsSfxMuted } = React.useContext(SoundControlContext);
 
   
   const playSound = soundPath => {
-    if (!sfxPlayer.isSfxMuted) {
-      sfxPlayer.audioHandle.pause();
-      sfxPlayer.audioHandle.src = soundPath;
-      sfxPlayer.audioHandle.load();
-      sfxPlayer.audioHandle.play();
+    if (!isSfxMuted) {
+      sfxAudioHandle.pause();
+      sfxAudioHandle.src = soundPath;
+      sfxAudioHandle.load();
+      sfxAudioHandle.play();
     }
   };
 
@@ -104,7 +108,6 @@ const Plant = (props) => {
   // useEffects //////
   // When component first loads, create a timer
   React.useEffect(
-
     ()=> {
       // console.log("useEffect: Creating grow timer and water timer.")
       //const rowColData = props.id.slice(4).split('-');
@@ -119,7 +122,6 @@ const Plant = (props) => {
           interval
         )
       );
-
       // WaterTimer sets isWatered to false when ended
       const waterTimeRemaining = isWatered ? WATER_TIME_DURATION*1000 : 0;
       setWaterTimerHandle(
@@ -150,6 +152,8 @@ const Plant = (props) => {
   );
   // Animate when id is set
   React.useEffect(animate, [props.id]);
+
+
 
 
   return (

@@ -4,8 +4,9 @@ import Box from "@material-ui/core/Box";
 import Plant from "./Plant";
 import PlantListDialog from "../Dialogs/PlantListDialog";
 import { plantSeed } from "../../api/GameApi";
-import { SfxPlayerContext } from '../../pages/GardenPage';
+import { SoundControlContext } from '../../contexts/SoundControlContext';
 import ShovelClip from "../Sound/SoundFiles/ShovelClip.wav";
+
 
 const useStyles = makeStyles({
   plot: {
@@ -23,6 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
+
 /**
  * GardenPlot contains planted plant or buying menu.
  * @param {object} props 
@@ -31,7 +33,11 @@ const GardenPlot = (props) => {
   // Variables //////
   const classes = useStyles();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const sfxPlayer = React.useContext(SfxPlayerContext);
+  const { sfxAudioHandle,
+          setSfxVolume,
+          sfxVolume,
+          isSfxMuted,
+          setIsSfxMuted }= React.useContext(SoundControlContext);
 
   // Button event click handlers //////
   // Called when a plant is clicked in the buying menu.
@@ -53,13 +59,11 @@ const GardenPlot = (props) => {
         // Pay for plant
         props.subtractMoney(plantInfo.cost);
         // Play planting sound
-        console.log("sfxPlayer: ")
-        console.log(sfxPlayer);
-        if (!sfxPlayer.isSfxMuted) {
-          sfxPlayer.audioHandle.pause();
-          sfxPlayer.audioHandle.src = ShovelClip;
-          sfxPlayer.audioHandle.load();
-          sfxPlayer.audioHandle.play();
+        if (!isSfxMuted) {
+          sfxAudioHandle.pause();
+          sfxAudioHandle.src = ShovelClip;
+          sfxAudioHandle.load();
+          sfxAudioHandle.play();
         }
       }
     });
@@ -99,5 +103,6 @@ const GardenPlot = (props) => {
     </Box>
   );
 };
+
 
 export default GardenPlot;

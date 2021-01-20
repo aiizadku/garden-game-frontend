@@ -11,16 +11,13 @@ import {
   Grid,
   Button,
   makeStyles,
-  IconButton
+  IconButton,
+  Box
 } from "@material-ui/core";
-import podium from '../../images/podium (3).png'
+import podium from '../../images/podium_small.png'
 
 
 const useStyles = makeStyles({
-  root: {
-    width: 400,
-    height: 300,
-  },
   title: {
     backgroundColor: "saddlebrown",
     borderBottom: "4px solid #7B3503",
@@ -29,20 +26,14 @@ const useStyles = makeStyles({
     backgroundColor: "tan",
     borderBottom: "2px solid #b89e7b",
   },
-  button: {
-    // backgroundColor: '#e9b0df',
-    position: 'absolute',
-    bottom: '2%',
-    width: '20%',
-    left: '40%',
+  table: {
+    minWidth: 250,
   },
   hover: {
     "&:hover": {
-      backgroundColor: "wheat",
-    },
-  },
-  table: {
-    minWidth: 250,
+    transform: "scale(1.1, 1.1)",
+    boxShadow: "0px 0px 2px 4px"
+    }
   },
 });
 
@@ -92,31 +83,28 @@ const LeaderBoard = () => {
   };
 
   return (
-    // <div >
-    //   <Button variant="contained" color="secondary" onClick={handleClickOpen}>
-    // LeaderBoard
-    //   </Button>
-    // <Dialog open={open} onClose={handleClose}>
-    //   <div >
-    //     {makeTable()}
-    //     </div>
-    // </Dialog>
-    // </div>
-    <Grid container spacing={1} align='center'>
-      <Grid item xs={12}>
-        {/* <Button className={classes.button} onClick={handleClickOpen}>
-        <img width='20%' src ={icon}/>
-        </Button> */}
-        <IconButton color="primary" className={classes.button} onClick={handleClickOpen} component="span">
-        <img width='40%' src ={podium}/>
-        </IconButton>
-      </Grid>
+    <Box
+      style={{
+        position: "absolute",
+        bottom: "20px",
+        left: "50%",
+        transform: "translateX(-50%)"
+      }}>
+      <IconButton
+        color="primary"
+        onClick={handleClickOpen}
+        component="span"
+        className={classes.hover}
+        style={{padding: 0}}
+      >
+        <img alt="leaderboard" style={{width: "70px"}} src={podium}/>
+      </IconButton>
       <Dialog open={open} onClose={handleClose}>
         <Grid item xs={12}>
           {makeTable()}
         </Grid>
       </Dialog>
-    </Grid>
+    </Box>
   )
 }
 

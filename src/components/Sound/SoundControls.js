@@ -6,7 +6,7 @@ import VolumeDownIcon from '@material-ui/icons/VolumeDown';
 import VolumeMuteIcon from '@material-ui/icons/VolumeMute';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import VolumeOffIcon from '@material-ui/icons/VolumeOff';
-import { SfxPlayerContext } from '../../pages/GardenPage';
+import { SoundControlContext } from '../../contexts/SoundControlContext';
 import gsap from 'gsap';
 
 const useStyles = makeStyles({
@@ -38,11 +38,11 @@ const SoundControls = props => {
   const [useMusic, setUseMusic] = React.useState(true);
   const [audioHandle, setAudioHandle] = React.useState(null);
   const [bgmVolume, setBgmVolume] = React.useState(50);
-  const sfxContext      = React.useContext(SfxPlayerContext);
-  const sfxVolume       = sfxContext.volume;
-  const adjustSfxVolume = sfxContext.volumeControl;
-  const isSfxMuted      = sfxContext.isSfxMuted;
-  const setIsSfxMuted   = sfxContext.setIsSfxMuted;
+  const { sfxAudioHandle,
+          setSfxVolume,
+          sfxVolume,
+          isSfxMuted,
+          setIsSfxMuted } = React.useContext(SoundControlContext);
 
   // UseEffect Initial Load //////
   React.useEffect(
@@ -210,7 +210,7 @@ const SoundControls = props => {
         <Slider
           value={sfxVolume} // 0 to 100
           className={classes.volumeSlider}
-          onChange={(e,value)=>adjustSfxVolume(value)}
+          onChange={(e,value)=>setSfxVolume(value/100)}
           orientation="vertical"
         />
       </Box>

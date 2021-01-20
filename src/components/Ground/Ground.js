@@ -1,12 +1,13 @@
 import Garden from "../Garden/Garden";
-import { makeStyles, Button } from "@material-ui/core";
-import { useContext, useState, useEffect } from "react";
+import { makeStyles, Button, Link } from "@material-ui/core";
+import React, { useContext, useState, useEffect } from "react";
 import {UserContext} from '../../contexts/UserContext'
 import UserApi from '../../api/UserApi';
 import LeaderBoard from "../LeaderBoard/LeaderBoard";
 import directionsign from '../../images/directionsign.png'
 import PlayerInfoBox from '../UI/PlayerInfoBox';
 import SoundControls from "../Sound/SoundControls";
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles({
   ground: {
@@ -121,7 +122,7 @@ const Ground = (props) => {
 
   const handleLogout = () => {
     localStorage.removeItem('token')
-    
+
     props.history.push('/')
   }
 
@@ -136,7 +137,7 @@ const Ground = (props) => {
       />
       <LeaderBoard/>
       {/* <Button onClick={handleLogout} className={classes.button}>Logout</Button> */}
-      <a className={classes.button} onClick={handleLogout}><img width="100%" src={directionsign}></img></a>
+      <Link className={classes.button} onClick={handleLogout}><img width="100%" alt="logout" src={directionsign} /></Link>
       <PlayerInfoBox
         username={gameState.user.username}
         currentBalance={currentBalance}
