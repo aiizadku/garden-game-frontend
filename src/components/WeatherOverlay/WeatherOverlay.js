@@ -16,7 +16,7 @@ const WeatherOverlay = props => {
       return(<RainStorm numDrops="300"/>)
     }
     if (input === "Cloud") {
-      return(<div>Cloud</div>);
+      return(null);
     }
     else {
       return(null);
