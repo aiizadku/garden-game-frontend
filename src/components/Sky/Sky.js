@@ -1,30 +1,34 @@
-import { makeStyles, TextareaAutosize } from "@material-ui/core";
-import UserBalance from "../User Balance/UserBalance";
+import { makeStyles } from "@material-ui/core";
 import { UserContext } from "../../contexts/UserContext";
 import { useContext } from "react";
-import LeaderBoard from "../LeaderBoard/LeaderBoard";
 import darkCloud from "../../images/clouds/darkCloud.png";
 import lightCLoud from "../../images/clouds/lightCloud.png";
+import SkyBackground from "../../images/skybackground.png";
+
+
 const useStyles = makeStyles({
+  container: {
+    position: "relative",
+    width: "100%",
+    height: "40vh"
+  },
   Clear: {
-    backgroundColor: "lightblue",
     minHeight: "20%",
     width: "100%",
-    height: "30vh",
-    position: "relative",
+    height: "40vh",
+    position: "absolute",
     top: 0,
     left: 0,
     margin: 0,
     backgroundImage: "url(" + lightCLoud + "), url(" + lightCLoud + "), url(" + lightCLoud + ")",
-    backgroundPosition: "20px 15px, 600px, 1500px ",
+    backgroundPosition: `20px 15px, 500px 70px, 750px 25px`,
     backgroundRepeat: "no-repeat",
   },
   Rain: {
-    backgroundColor: "lightblue",
     minHeight: "20%",
     width: "100%",
-    height: "30vh",
-    position: "relative",
+    height: "40vh",
+    position: "absolute",
     top: 0,
     left: 0,
     margin: 0,
@@ -33,11 +37,10 @@ const useStyles = makeStyles({
     backgroundRepeat: "repeat-x",
   },
   Cloud: {
-    backgroundColor: "lightblue",
     minHeight: "20%",
     width: "100%",
-    height: "30vh",
-    position: "relative",
+    height: "40vh",
+    position: "absolute",
     top: 0,
     left: 0,
     margin: 0,
@@ -46,11 +49,10 @@ const useStyles = makeStyles({
     backgroundRepeat: "repeat-x",
   },
   Snow: {
-    backgroundColor: "lightblue",
     minHeight: "20%",
     width: "100%",
-    height: "30vh",
-    position: "relative",
+    height: "40vh",
+    position: "absolute",
     top: 0,
     left: 0,
     margin: 0,
@@ -58,10 +60,19 @@ const useStyles = makeStyles({
     backgroundPosition: "20px 15px",
     backgroundRepeat: "repeat-x",
   },
+  transition: {
+    width: 1200,
+    height: "100%",
+    position: "absolute",
+    bottom: 0,
+    left: "50%",
+    transform: "translateX(-50%)",
+  }
 });
 
 /**
- * Top 30% of screen.
+ * Top 40% of screen.
+ * Contains transition image between sky and ground.
  * Shows weather effects.
  * @param {object} props
  */
@@ -73,18 +84,20 @@ const Sky = (props) => {
   // console.log(props.weather)
   return (
     // <div className={classes[props.weather]}>
-    <div
-      className={
-        props.weather === "Clear"
-          ? classes.Clear
-          : classes[props.weather] || classes.Clear
-      }
-    >
-
-      {/* <LeaderBoard /> */}
-
+    <div className={classes.container}>
+      <div className={classes.transition}>
+        <img src={SkyBackground} alt="sky transition" className={classes.transition}/>
+      </div>
+      <div
+        className={
+          props.weather === "Clear"
+            ? classes.Clear
+            : classes[props.weather] || classes.Clear
+        }
+        ></div>
     </div>
   );
 };
+
 
 export default Sky;
