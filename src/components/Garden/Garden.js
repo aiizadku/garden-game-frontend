@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignContent: "center",
     borderRadius: 10,
-    backgroundImage: "repeating-linear-gradient(to bottom, saddlebrown 0px 20px, sienna 20px 40px)",
+    backgroundImage: "repeating-linear-gradient(to bottom, saddlebrown 0px 20.6px, sienna 20.6px 41.2px)",
     border: "4px solid #7B3503"
   },
   flexRow: {
