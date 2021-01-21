@@ -57,14 +57,23 @@ const Ground = (props) => {
 
   useEffect(()=>{
     const { id } = gameState.user
-    if (currentXp % 40 === 0 & currentXp !== 0){
+    const newLevel = Math.floor(currentXp / 40);
+    if (newLevel > currentLevel) {
       const levelObject = {
         user: id,
-        // currentLevel / 40
-        current_level: currentLevel + 1
+        current_level: newLevel
       }
-      UserApi.addToBalanceByID(id, levelObject)
+      UserApi.addToBalanceByID(id, levelObject);
+      setCurrentLevel(newLevel);
     }
+    // if (currentXp % 40 === 0 & currentXp !== 0){
+    //   const levelObject = {
+    //     user: id,
+    //     // currentLevel / 40
+    //     current_level: currentLevel + 1
+    //   }
+    //   UserApi.addToBalanceByID(id, levelObject)
+    // }
   }, [currentXp])
 
 

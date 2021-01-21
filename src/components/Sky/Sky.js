@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     left: 0,
     margin: 0,
     backgroundImage: "url(" + lightCLoud + "), url(" + lightCLoud + "), url(" + lightCLoud + ")",
-    backgroundPosition: `20px 15px, 500px 70px, 750px 25px`,
+    backgroundPosition: `20px 2vh, 500px 5vh, 750px 3vh`, // `20px 15px, 500px 70px, 750px 25px`
     backgroundRepeat: "no-repeat",
   },
   Rain: {
