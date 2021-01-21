@@ -4,9 +4,11 @@ import { makeStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import getIP from "../api/LocationApi";
 import getWeather from "../api/WeatherApi";
+import WeatherOverlay from "../components/WeatherOverlay/WeatherOverlay";
 
 const useStyles = makeStyles({
   container: {
+    position: "relative",
     textAlign: "center",
     overflow: 'hidden',
     maxWidth: 1200,
@@ -48,10 +50,11 @@ const GardenPage = (props) => {
   // getLocation();
   const classes = useStyles();
   return (
-    <div className={classes.container}>
+      <div className={classes.container}>
         <Sky weather={weather} />
         <Ground {...props}/>
-    </div>
+        <WeatherOverlay weather={weather} />
+      </div>
   );
 };
 

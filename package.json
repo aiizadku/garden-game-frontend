@@ -17,9 +17,11 @@
     "react-floating-button": "^1.1.1",
     "react-hot-loader": "^4.13.0",
     "react-liquid-gauge": "^1.2.4",
+    "react-rain-animation": "^1.0.4",
     "react-redirect": "^1.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "react-snowstorm": "0.0.3",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
